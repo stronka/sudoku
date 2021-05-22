@@ -3,3 +3,7 @@ from .logic import (
     check_box_correct,
     check_sudoku_correct
 )
+
+from .solver import (
+    solve_row
+)
