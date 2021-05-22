@@ -2,7 +2,7 @@ import unittest
 import numpy
 
 from logic import solve_row, solve_box, solve_row_for, solve_box_for, solve_sudoku_for, solve_sudoku, \
-    check_sudoku_correct, mask_sudoku_for, annotate_sudoku, find_definitive_annotations
+    check_sudoku_correct, annotate_sudoku
 
 
 class TestSolver(unittest.TestCase):
@@ -172,92 +172,6 @@ class TestSolver(unittest.TestCase):
             [0, 0, 0, 0, 0, 0, 0, 8, 0]
         ])
         self.assertNumpyEqual(expected, solve_sudoku_for(sudoku, 8))
-
-    def test_solveSudoku_EightMissing_ReturnSudoku(self):
-        sudoku = numpy.array([
-            [7, 0, 9, 6, 2, 3, 1, 5, 4],
-            [2, 1, 6, 8, 5, 4, 9, 7, 3],
-            [5, 4, 3, 9, 7, 1, 6, 2, 8],
-            [9, 3, 4, 7, 1, 2, 8, 6, 5],
-            [8, 6, 5, 3, 4, 9, 7, 1, 2],
-            [1, 7, 2, 5, 6, 8, 4, 3, 9],
-            [4, 5, 1, 2, 8, 7, 3, 9, 6],
-            [3, 2, 8, 1, 9, 6, 5, 4, 7],
-            [6, 9, 7, 4, 3, 5, 2, 8, 1]
-        ])
-        expected = numpy.array([
-            [7, 8, 9, 6, 2, 3, 1, 5, 4],
-            [2, 1, 6, 8, 5, 4, 9, 7, 3],
-            [5, 4, 3, 9, 7, 1, 6, 2, 8],
-            [9, 3, 4, 7, 1, 2, 8, 6, 5],
-            [8, 6, 5, 3, 4, 9, 7, 1, 2],
-            [1, 7, 2, 5, 6, 8, 4, 3, 9],
-            [4, 5, 1, 2, 8, 7, 3, 9, 6],
-            [3, 2, 8, 1, 9, 6, 5, 4, 7],
-            [6, 9, 7, 4, 3, 5, 2, 8, 1]
-        ])
-        self.assertNumpyEqual(expected, solve_sudoku(sudoku))
-
-    def test_solveSudoku_NineMissing_ReturnSudoku(self):
-        sudoku = numpy.array([
-            [7, 8, 0, 6, 2, 3, 1, 5, 4],
-            [2, 1, 6, 8, 5, 4, 9, 7, 3],
-            [5, 4, 3, 9, 7, 1, 6, 2, 8],
-            [9, 3, 4, 7, 1, 2, 8, 6, 5],
-            [8, 6, 5, 3, 4, 9, 7, 1, 2],
-            [1, 7, 2, 5, 6, 8, 4, 3, 9],
-            [4, 5, 1, 2, 8, 7, 3, 9, 6],
-            [3, 2, 8, 1, 9, 6, 5, 4, 7],
-            [6, 9, 7, 4, 3, 5, 2, 8, 1]
-        ])
-        expected = numpy.array([
-            [7, 8, 9, 6, 2, 3, 1, 5, 4],
-            [2, 1, 6, 8, 5, 4, 9, 7, 3],
-            [5, 4, 3, 9, 7, 1, 6, 2, 8],
-            [9, 3, 4, 7, 1, 2, 8, 6, 5],
-            [8, 6, 5, 3, 4, 9, 7, 1, 2],
-            [1, 7, 2, 5, 6, 8, 4, 3, 9],
-            [4, 5, 1, 2, 8, 7, 3, 9, 6],
-            [3, 2, 8, 1, 9, 6, 5, 4, 7],
-            [6, 9, 7, 4, 3, 5, 2, 8, 1]
-        ])
-        self.assertNumpyEqual(expected, solve_sudoku(sudoku))
-
-    def test_MaskSudoku_RegularSudoku_ReturnCorrectEightMaskAt02(self):
-        sudoku = self.get_regular_sudoku()
-        expected = numpy.array((
-            0,  # row mask
-            8,  # col mask
-            0   # box mask
-        ))
-        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 8)[:, 0, 2])
-
-    def test_MaskSudoku_RegularSudoku_ReturnCorrectEightMaskAt10(self):
-        sudoku = self.get_regular_sudoku()
-        expected = numpy.array((
-            8,  # row mask
-            8,  # col mask
-            8   # box mask
-        ))
-        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 8)[:, 1, 0])
-
-    def test_MaskSudoku_RegularSudoku_ReturnCorrectFiveMaskAt10(self):
-        sudoku = self.get_regular_sudoku()
-        expected = numpy.array((
-            0,  # row mask
-            0,  # col mask
-            0   # box mask
-        ))
-        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 5)[:, 1, 0])
-
-    def test_MaskSudoku_RegularSudoku_ReturnCorrectFiveMaskAt11(self):
-        sudoku = self.get_regular_sudoku()
-        expected = numpy.array((
-            5,  # row mask
-            0,  # col mask
-            0   # box mask
-        ))
-        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 5)[:, 1, 1])
 
     def test_AnnotateSudoku_RegularSudoku_ReturnCorrectMaskAt11(self):
         sudoku = self.get_regular_sudoku()
