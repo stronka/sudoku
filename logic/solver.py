@@ -40,6 +40,32 @@ def _apply_mask(sudoku: numpy.array, number: int) -> numpy.array:
     return numpy.array([solve_row_for(row, number) for row in sudoku])
 
 
+def process_last_pairs(annotate):
+    def process(sudoku: numpy.array):
+        filtered_annotations = annotate(sudoku)
+
+        for j in range(0, 9):
+            ks = []
+            indices = []
+            for k in range(0, 9):
+                    col = filtered_annotations[k, :, j]
+                    for n in range(0, 3):
+                        subcol = filtered_annotations[k, 3*n:3*(n+1), j]
+                        if subcol.sum()/subcol.max() == 2 and col.sum()/col.max() == 2:
+                            ks.append(k)
+                            indices.append(col.nonzero())
+
+            if len(ks) == 2:
+                for k in range(0, 9):
+                    if k not in ks:
+                        filtered_annotations[k, indices[0], j] = 0
+
+        return filtered_annotations
+
+    return process
+
+
+@process_last_pairs
 def annotate_sudoku(sudoku: numpy.array) -> numpy.array:
     return numpy.array(list(map(lambda x: solve_sudoku_for(sudoku, x), range(1, 10))))
 
@@ -49,13 +75,46 @@ def find_definitive_annotations(sudoku):
     result = numpy.zeros((9, 9))
 
     for i, j in itertools.product(range(0, 9), range(0, 9)):
-        result[i, j] = _get_definite_annotation(annotated_sudoku[:, i, j]) if sudoku[i, j] == 0 else 0
+        if sudoku[i, j] == 0:
+            result[i, j] = _get_definite_annotation(annotated_sudoku, i, j)
 
     return result
 
 
-def _get_definite_annotation(annotation):
-    return annotation.max() if annotation.sum()/annotation.max() == 1 else 0
+def _get_definite_annotation(annotation, i, j):
+    annotation_stack = annotation[:, i, j]
+    if annotation_stack.sum()/annotation_stack.max() == 1:
+        return annotation_stack.max()
+
+    box_bounds = [0, 3, 6, 9]
+    i_lower, i_upper, j_lower, j_upper = 0, 0, 0, 0
+
+    for bound in box_bounds:
+        if i < bound:
+            i_upper = bound
+            break
+        i_lower = bound
+
+    for bound in box_bounds:
+        if j < bound:
+            j_upper = bound
+            break
+        j_lower = bound
+
+    for k in range(0, 9):
+        annotation_box = annotation[k, i_lower:i_upper, j_lower:j_upper].flatten()
+        if annotation_box.sum()/annotation_box.max() == 1 and annotation_box.max() == annotation_stack[k]:
+            return annotation_box.max()
+
+        annotation_col = annotation[k, i, :]
+        if annotation_col.sum()/annotation_col.max() == 1 and annotation_col.max() == annotation_stack[k]:
+            return annotation_col.max()
+
+        annotation_row = annotation[k, :, j]
+        if annotation_row.sum()/annotation_row.max() == 1 and annotation_row.max() == annotation_stack[k]:
+            return annotation_row.max()
+
+    return 0
 
 
 def solve_sudoku(sudoku: numpy.array) -> numpy.array:

@@ -182,6 +182,10 @@ class TestSolver(unittest.TestCase):
         sudoku = self.get_regular_sudoku()
         self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
 
+    def test_SolveSudoku_HardSudoku_ReturnSudoku(self):
+        sudoku = self.get_hard_sudoku()
+        self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
+
     @staticmethod
     def get_regular_sudoku():
         return numpy.array([
@@ -194,6 +198,22 @@ class TestSolver(unittest.TestCase):
             [9, 2, 0, 0, 0, 0, 0, 3, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 4],
             [0, 4, 0, 1, 0, 7, 0, 2, 0]
+        ])
+
+    @staticmethod
+    def get_hard_sudoku():
+        return numpy.array([
+            [4, 0, 0,    0, 0, 0,   3, 6, 5],
+            [2, 0, 9,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 5, 8,   0, 0, 0],
+
+            [7, 0, 0,    0, 6, 0,   8, 1, 0],
+            [0, 0, 0,    0, 3, 0,   0, 0, 0],
+            [0, 9, 1,    0, 2, 0,   0, 0, 3],
+
+            [0, 0, 0,    3, 4, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   5, 0, 9],
+            [3, 8, 7,    0, 0, 0,   0, 0, 4],
         ])
 
     def assertNumpyEqual(self, first: numpy.array, second: numpy):
