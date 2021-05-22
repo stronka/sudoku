@@ -20,7 +20,7 @@ class TestSolver(unittest.TestCase):
         solved = [2, 1, 6, 8, 5, 4, 9, 7, 3]
         self.assertEqual(solved, solve_row(row))
 
-    def test_solveBox_OneNumberMissing_Fill(self):
+    def test_solveBox_FiveMissing_Fill(self):
         box = numpy.array([
             [1, 2, 3],
             [4, 0, 6],
@@ -29,6 +29,19 @@ class TestSolver(unittest.TestCase):
         solved_box = numpy.array([
             [1, 2, 3],
             [4, 5, 6],
+            [7, 8, 9]
+        ])
+        self.assertNumpyEqual(solved_box, solve_box(box))
+
+    def test_solveBox_OneMissing_Fill(self):
+        box = numpy.array([
+            [5, 2, 3],
+            [4, 0, 6],
+            [7, 8, 9]
+        ])
+        solved_box = numpy.array([
+            [5, 2, 3],
+            [4, 1, 6],
             [7, 8, 9]
         ])
         self.assertNumpyEqual(solved_box, solve_box(box))
