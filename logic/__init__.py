@@ -9,6 +9,9 @@ from .solver import (
     solve_row_for,
     solve_box,
     solve_box_for,
+    mask_sudoku_for,
     solve_sudoku_for,
+    annotate_sudoku,
+    find_definitive_annotations,
     solve_sudoku
 )

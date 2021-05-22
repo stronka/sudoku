@@ -1,7 +1,8 @@
 import unittest
 import numpy
 
-from logic import solve_row, solve_box, solve_row_for, solve_box_for, solve_sudoku_for, solve_sudoku
+from logic import solve_row, solve_box, solve_row_for, solve_box_for, solve_sudoku_for, solve_sudoku, \
+    check_sudoku_correct, mask_sudoku_for, annotate_sudoku, find_definitive_annotations
 
 
 class TestSolver(unittest.TestCase):
@@ -221,6 +222,65 @@ class TestSolver(unittest.TestCase):
             [6, 9, 7, 4, 3, 5, 2, 8, 1]
         ])
         self.assertNumpyEqual(expected, solve_sudoku(sudoku))
+
+    def test_MaskSudoku_RegularSudoku_ReturnCorrectEightMaskAt02(self):
+        sudoku = self.get_regular_sudoku()
+        expected = numpy.array((
+            0,  # row mask
+            8,  # col mask
+            0   # box mask
+        ))
+        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 8)[:, 0, 2])
+
+    def test_MaskSudoku_RegularSudoku_ReturnCorrectEightMaskAt10(self):
+        sudoku = self.get_regular_sudoku()
+        expected = numpy.array((
+            8,  # row mask
+            8,  # col mask
+            8   # box mask
+        ))
+        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 8)[:, 1, 0])
+
+    def test_MaskSudoku_RegularSudoku_ReturnCorrectFiveMaskAt10(self):
+        sudoku = self.get_regular_sudoku()
+        expected = numpy.array((
+            0,  # row mask
+            0,  # col mask
+            0   # box mask
+        ))
+        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 5)[:, 1, 0])
+
+    def test_MaskSudoku_RegularSudoku_ReturnCorrectFiveMaskAt11(self):
+        sudoku = self.get_regular_sudoku()
+        expected = numpy.array((
+            5,  # row mask
+            0,  # col mask
+            0   # box mask
+        ))
+        self.assertNumpyEqual(expected, mask_sudoku_for(sudoku, 5)[:, 1, 1])
+
+    def test_AnnotateSudoku_RegularSudoku_ReturnCorrectMaskAt11(self):
+        sudoku = self.get_regular_sudoku()
+        expected = numpy.array([1, 0, 3, 0, 0, 0, 0, 0, 0])
+        self.assertNumpyEqual(expected, annotate_sudoku(sudoku)[:, 1, 1])
+
+    def test_SolveSudoku_RegularSudoku_ReturnSudoku(self):
+        sudoku = self.get_regular_sudoku()
+        self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
+
+    @staticmethod
+    def get_regular_sudoku():
+        return numpy.array([
+            [0, 6, 0, 3, 0, 5, 0, 8, 0],
+            [8, 0, 0, 0, 0, 0, 0, 0, 9],
+            [4, 5, 0, 0, 0, 0, 0, 6, 7],
+            [0, 0, 0, 2, 0, 4, 0, 0, 0],
+            [2, 7, 0, 9, 0, 8, 0, 4, 3],
+            [0, 0, 0, 7, 0, 1, 0, 0, 0],
+            [9, 2, 0, 0, 0, 0, 0, 3, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 4],
+            [0, 4, 0, 1, 0, 7, 0, 2, 0]
+        ])
 
     def assertNumpyEqual(self, first: numpy.array, second: numpy):
         self.assertTrue((first == second).all())
