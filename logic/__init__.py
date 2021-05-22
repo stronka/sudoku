@@ -6,5 +6,9 @@ from .logic import (
 
 from .solver import (
     solve_row,
-    solve_box
+    solve_row_for,
+    solve_box,
+    solve_box_for,
+    solve_sudoku_for,
+    solve_sudoku
 )
