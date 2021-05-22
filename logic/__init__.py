@@ -5,5 +5,6 @@ from .logic import (
 )
 
 from .solver import (
-    solve_row
+    solve_row,
+    solve_box
 )
