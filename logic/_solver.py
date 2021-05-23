@@ -42,17 +42,49 @@ def process_last_elements(stack: numpy.array) -> None:
     for k in range(0, 9):
         for i in range(0, 9):
             row = stack[k, i, :]
-            if row.sum()/row.max() == 1:
+            if row.sum() and row.sum()/row.max() == 1:
                 ind = numpy.nonzero(row)[0]
                 stack[:, i, ind] = 0
                 stack[k, i, ind] = k+1
 
         for j in range(0, 9):
             col = stack[k, :, j]
-            if col.sum()/col.max() == 1:
+            if col.sum() and col.sum()/col.max() == 1:
                 ind = numpy.nonzero(col)[0]
                 stack[:, ind, j] = 0
                 stack[k, ind, j] = k+1
+    return
+
+
+def process_annotated_pairs(stack: numpy.array) -> None:
+
+    for b in range(3):
+        for i in range(9):
+            for n in range(2):
+                non_pair_ks = list(range(9))
+
+                for k in range(9):
+                    candidate = stack[k, i, 3*b+n:3*b+n+2]
+                    candidate_row = stack[k, i, :]
+                    if candidate_row.sum() == candidate.sum() and candidate.sum()/candidate.max() == 2:
+                        non_pair_ks.remove(k)
+
+                if len(non_pair_ks) == 7:
+                    stack[non_pair_ks, i, 3*b+n:3*b+n+2] = 0
+
+        for j in range(9):
+            for n in range(2):
+                non_pair_ks = list(range(9))
+
+                for k in range(9):
+                    candidate = stack[k, 3*b+n:3*b+n+2, j]
+                    candidate_col = stack[k, :, j]
+                    if candidate_col.sum() == candidate.sum() and candidate.sum()/candidate.max() == 2:
+                        non_pair_ks.remove(k)
+
+                if len(non_pair_ks) == 7:
+                    stack[non_pair_ks, 3*b+n:3*b+n+2, j] = 0
+
     return
 
 
@@ -73,9 +105,11 @@ def solve_sudoku(sudoku):
 
     while not check_sudoku_correct(result):
         cross_out_sudoku(candidates_stack, result)
-        process_last_elements(candidates_stack)
-        fill = create_sudoku_fill(candidates_stack, result)
 
+        process_last_elements(candidates_stack)
+        process_annotated_pairs(candidates_stack)
+
+        fill = create_sudoku_fill(candidates_stack, result)
         if not fill.any():
             print("Nothing found, but sudoku is not correct!")
             print("Sudoku: \n", sudoku)
