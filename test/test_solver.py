@@ -13,7 +13,7 @@ class TestSolver(unittest.TestCase):
         candidate_stack = create_candidates_stack()
         sudoku = numpy.zeros((9, 9))
         sudoku[0, 0] = 1
-        expected = numpy.array([1, 0, 0,  0, 0, 0,  0, 0, 0])
+        expected = numpy.array([0, 0, 0,  0, 0, 0,  0, 0, 0])
 
         cross_out_sudoku(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[0, 0, :])
@@ -23,7 +23,7 @@ class TestSolver(unittest.TestCase):
         sudoku = numpy.zeros((9, 9))
         sudoku[0, 0] = 1
         sudoku[0, 1] = 2
-        expected = numpy.array([0, 2, 0,  0, 0, 0,  0, 0, 0])
+        expected = numpy.array([0, 0, 0,  0, 0, 0,  0, 0, 0])
 
         cross_out_sudoku(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[1, 0, :])
@@ -32,7 +32,7 @@ class TestSolver(unittest.TestCase):
         candidate_stack = create_candidates_stack()
         sudoku = numpy.zeros((9, 9))
         sudoku[0, 0] = 1
-        expected = numpy.array([1, 0, 0,  0, 0, 0,  0, 0, 0])
+        expected = numpy.array([0, 0, 0,  0, 0, 0,  0, 0, 0])
 
         cross_out_sudoku(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[0, :, 0])
@@ -42,7 +42,7 @@ class TestSolver(unittest.TestCase):
         sudoku = numpy.zeros((9, 9))
         sudoku[0, 0] = 1
         sudoku[0, 1] = 2
-        expected = numpy.array([2, 0, 0,  0, 0, 0,  0, 0, 0])
+        expected = numpy.array([0, 0, 0,  0, 0, 0,  0, 0, 0])
 
         cross_out_sudoku(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[1, :, 1])
@@ -52,7 +52,7 @@ class TestSolver(unittest.TestCase):
         sudoku = numpy.zeros((9, 9))
         sudoku[0, 0] = 1
         expected = numpy.array([
-            [1, 0, 0],
+            [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]
         ])
@@ -66,7 +66,7 @@ class TestSolver(unittest.TestCase):
         sudoku[0, 0] = 1
         sudoku[0, 1] = 2
         expected = numpy.array([
-            [0, 2, 0],
+            [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]
         ])
@@ -81,7 +81,7 @@ class TestSolver(unittest.TestCase):
         sudoku[1, 1] = 2
         expected = numpy.array([
             [0, 0, 0],
-            [0, 2, 0],
+            [0, 0, 0],
             [0, 0, 0]
         ])
 
@@ -95,7 +95,7 @@ class TestSolver(unittest.TestCase):
         sudoku[1, 4] = 2
         expected = numpy.array([
             [0, 0, 0],
-            [0, 2, 0],
+            [0, 0, 0],
             [0, 0, 0]
         ])
 
@@ -108,7 +108,7 @@ class TestSolver(unittest.TestCase):
         sudoku[0, 0] = 1
         sudoku[3, 4] = 2
         expected = numpy.array([
-            [0, 2, 0],
+            [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]
         ])
@@ -116,15 +116,41 @@ class TestSolver(unittest.TestCase):
         cross_out_sudoku(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[1, 3:6, 3:6])
 
-    def test_FillSudoku_StackIsNonDefinitive_SudokuUnchanged(self):
+    def test_CreateSudokuFill_StackIsNonDefinitive_FillEmpty(self):
         candidate_stack = create_candidates_stack()
         candidate_stack[:, 0, 0] = [0, 2, 3,  0, 0, 0,  0, 0, 0]
         sudoku = numpy.zeros((9, 9))
+
         expected = numpy.zeros((9, 9))
 
-        fill_sudoku(candidate_stack, sudoku)
-        self.assertNumpyEqual(expected, sudoku)
+        fill = create_sudoku_fill(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, fill)
 
+    def test_CreateSudokuFill_StackIsDefinitive_FillCorrect(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[:, 0, 0] = [0, 0, 0,  0, 5, 0,  0, 0, 0]
+        sudoku = numpy.zeros((9, 9))
+
+        expected = numpy.zeros((9, 9))
+        expected[0, 0] = 5
+
+        fill = create_sudoku_fill(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, fill)
+
+    def test_CreateSudokuFill_StackIsNonDefiniteOverNonEmptyCell_FillEmpty(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[:, 0, 0] = [0, 0, 0,  0, 5, 0,  0, 0, 0]
+        sudoku = numpy.zeros((9, 9))
+        sudoku[0, 0] = 1
+
+        expected = numpy.zeros((9, 9))
+        fill = create_sudoku_fill(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, fill)
+
+    #
+    # def test_SolveSudoku_Regular_SudokuCorrect(self):
+    #     sudoku = self.get_regular_sudoku()
+    #     self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
 
     @staticmethod
     def get_regular_sudoku():

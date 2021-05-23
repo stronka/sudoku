@@ -21,8 +21,6 @@ def cross_out_sudoku(stack: numpy.array, sudoku: numpy.array) -> None:
         stack[k, :, j] = 0
         stack[k, i1:i2, j1:j2] = 0
 
-        stack[k, i, j] = number
-
     return
 
 
@@ -39,9 +37,28 @@ def find_box_coords(i):
     return i_lo, i_hi
 
 
-def fill_sudoku(stack: numpy.array, sudoku: numpy.array) -> None:
-    pass
+def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
+    fill = numpy.zeros((9, 9))
+
+    for i, j in product(range(0, 9), range(0, 9)):
+        candidates = stack[:, i, j]
+        if candidates.sum()/candidates.max() == 1 and sudoku[i, j] == 0:
+            fill[i, j] = candidates.max()
+
+    return fill
 
 
 def solve_sudoku(sudoku):
-    return sudoku
+    result = sudoku
+    candidates_stack = create_candidates_stack()
+
+    while not check_sudoku_correct(result):
+        cross_out_sudoku(candidates_stack, result)
+        fill = create_sudoku_fill(candidates_stack, result)
+
+        if not fill.any():
+            raise Exception("Nothing foud, but sudoku is not correct!")
+
+        result = numpy.add(result, fill)
+
+    return result
