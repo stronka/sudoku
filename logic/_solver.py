@@ -1,6 +1,5 @@
 import numpy
 from itertools import product
-from functools import reduce
 
 from logic import check_sudoku_correct
 
