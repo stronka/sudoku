@@ -38,12 +38,23 @@ def find_box_coords(i):
     return i_lo, i_hi
 
 
+def process_last_elements(stack: numpy.array) -> None:
+    for k in range(0, 9):
+        for i in range(0, 9):
+            row = stack[k, i, :]
+            if row.sum()/row.max() == 1:
+                ind = numpy.nonzero(row)[0]
+                stack[:, i, ind] = 0
+                stack[k, i, ind] = k+1
+    return
+
+
 def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
     fill = numpy.zeros((9, 9))
 
     for i, j in product(range(0, 9), range(0, 9)):
         candidates = stack[:, i, j]
-        if candidates.sum()/candidates.max() == 1 and sudoku[i, j] == 0:
+        if sudoku[i, j] == 0 and candidates.sum()/candidates.max() == 1:
             fill[i, j] = candidates.max()
 
     return fill
@@ -58,7 +69,11 @@ def solve_sudoku(sudoku):
         fill = create_sudoku_fill(candidates_stack, result)
 
         if not fill.any():
-            raise Exception("Nothing foud, but sudoku is not correct!")
+            print("Nothing found, but sudoku is not correct!")
+            print("Sudoku: \n", sudoku)
+            print("Result: \n", result)
+            print("Found:  \n", numpy.subtract(result, sudoku))
+            raise Exception("Empty fill!")
 
         result = numpy.add(result, fill)
 
