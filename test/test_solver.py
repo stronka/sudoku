@@ -1,7 +1,7 @@
 import unittest
 import numpy
 
-from logic.solver import *
+from logic._solver import *
 
 
 class TestSolver(unittest.TestCase):

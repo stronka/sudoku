@@ -1,10 +1,6 @@
 import unittest
 import numpy
-from logic import (
-    check_box_correct,
-    check_row_correct,
-    check_sudoku_correct
-)
+from logic._logic import *
 
 
 class TestLogic(unittest.TestCase):

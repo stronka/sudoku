@@ -1,6 +1,2 @@
-from .logic import (
-    check_row_correct,
-    check_box_correct,
-    check_sudoku_correct
-)
-
+from ._logic import check_sudoku_correct
+from ._solver import solve_sudoku
