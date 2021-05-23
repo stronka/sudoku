@@ -225,7 +225,7 @@ class TestSolver(unittest.TestCase):
         process_last_elements(candidate_stack)
         self.assertNumpyEqual(expected, candidate_stack[:, 0, 4])
 
-    def test_ProcessLastElements_LastElementInOtherLayerFound_WipeAlongStack(self):
+    def test_ProcessLastElements_LastElementInColumnInOtherLayerFound_WipeAlongStack(self):
         candidate_stack = create_candidates_stack()
         candidate_stack[5, :, 5] = 0
         candidate_stack[5, 0, 5] = 6
@@ -381,6 +381,17 @@ class TestSolver(unittest.TestCase):
         sudoku = self.get_hard_sudoku()
         self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
 
+    def test_SolveSudoku_Hard2_SudokuCorrect(self):
+        sudoku = self.get_hard_sudoku2()
+        self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
+
+    def test_ProcessIdenticalPairs_FullStack_DoNothing(self):
+        candidate_stack = create_candidates_stack()
+        expected = candidate_stack
+
+        process_identical_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack)
+
     @staticmethod
     def get_regular_sudoku():
         return numpy.array([
@@ -411,5 +422,22 @@ class TestSolver(unittest.TestCase):
             [3, 8, 7,    0, 0, 0,   0, 0, 4],
         ])
 
-    def assertNumpyEqual(self, first: numpy.array, second: numpy):
+    @staticmethod
+    def get_hard_sudoku2():
+        return numpy.array([
+            [0, 0, 2,    0, 0, 0,   0, 0, 8],
+            [0, 5, 0,    0, 0, 0,   7, 0, 0],
+            [4, 0, 0,    0, 0, 1,   6, 3, 0],
+
+            [0, 0, 0,    4, 0, 0,   3, 7, 2],
+            [0, 0, 0,    9, 0, 3,   0, 0, 0],
+            [1, 2, 3,    0, 0, 6,   0, 0, 0],
+
+            [0, 8, 9,    5, 0, 0,   0, 0, 4],
+            [0, 0, 5,    0, 0, 0,   0, 9, 0],
+            [2, 0, 0,    0, 0, 0,   5, 0, 0],
+        ])
+
+    @staticmethod
+    def assertNumpyEqual(first: numpy.array, second: numpy):
         numpy.testing.assert_equal(first, second)

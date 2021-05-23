@@ -57,7 +57,6 @@ def process_last_elements(stack: numpy.array) -> None:
 
 
 def process_annotated_pairs(stack: numpy.array) -> None:
-
     for b in range(3):
         for i in range(9):
             for n in range(2):
@@ -84,7 +83,10 @@ def process_annotated_pairs(stack: numpy.array) -> None:
 
                 if len(non_pair_ks) == 7:
                     stack[non_pair_ks, 3*b+n:3*b+n+2, j] = 0
+    return
 
+
+def process_identical_pairs(stack: numpy.array) -> None:
     return
 
 
