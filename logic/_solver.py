@@ -19,6 +19,7 @@ def cross_out_sudoku(stack: numpy.array, sudoku: numpy.array) -> None:
 
         stack[k, i, :] = 0
         stack[k, :, j] = 0
+        stack[:, i, j] = 0
         stack[k, i1:i2, j1:j2] = 0
 
     return

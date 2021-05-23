@@ -102,6 +102,14 @@ class TestSolver(unittest.TestCase):
         cross_out_sudoku(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[1, 0:3, 3:6])
 
+    def test_CrossOutSudoku_SudokuEmptyWithOneAndTwoInSecondRow_CrossWholeStack(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[0, 0] = 1
+        expected = numpy.array([0, 0, 0,  0, 0, 0,  0, 0, 0])
+        cross_out_sudoku(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, candidate_stack[:, 0, 3])
+
     def test_CrossOutSudoku_SudokuEmptyWithOneAndTwoInFourthRow_CrossOutSecondBox(self):
         candidate_stack = create_candidates_stack()
         sudoku = numpy.zeros((9, 9))
