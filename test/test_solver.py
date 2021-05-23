@@ -377,6 +377,40 @@ class TestSolver(unittest.TestCase):
         process_annotated_pairs(candidate_stack)
         self.assertNumpyEqual(expected, candidate_stack[:, 1, 3:5])
 
+    def test_ProcessAnnotatedPairs_PairInSecondRowMidBoxFirstAndSecondColumnHorizontally_WipeOthers(self):
+        candidate_stack = numpy.zeros((9, 9, 9))
+        candidate_stack[:, 1, 3:6] = numpy.array([
+            [0, 0, 0,  0, 5, 6,  7, 0, 0],
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+        ]).transpose()
+
+        expected = numpy.array([
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+        ]).transpose()
+
+        process_annotated_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack[:, 1, 3:6])
+
+    def test_ProcessAnnotatedPairs_PairInSecondRowMidBoxFirstAndThirdColumnHorizontally_WipeOthers(self):
+        candidate_stack = numpy.zeros((9, 9, 9))
+        candidate_stack[:, 1, 3:6] = numpy.array([
+            [0, 0, 0,  0, 5, 6,  7, 0, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+        ]).transpose()
+
+        expected = numpy.array([
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+        ]).transpose()
+
+        process_annotated_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack[:, 1, 3:6])
+
     def test_SolveSudoku_Hard_SudokuCorrect(self):
         sudoku = self.get_hard_sudoku()
         self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
@@ -391,6 +425,96 @@ class TestSolver(unittest.TestCase):
 
         process_identical_pairs(candidate_stack)
         self.assertNumpyEqual(expected, candidate_stack)
+
+    def test_ProcessIdenticalPairs_ParisFound_WipeFromOtherBoxes(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[4:6, :, 0] = numpy.array([
+            [5, 5, 0,  0, 5, 0,  0, 0, 0],
+            [6, 6, 0,  0, 0, 0,  0, 0, 0],
+        ])
+
+        expected = numpy.array([
+            [5, 5, 0,  0, 0, 0,  0, 0, 0],
+            [6, 6, 0,  0, 0, 0,  0, 0, 0],
+        ])
+
+        process_identical_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack[4:6, :, 0])
+
+    def test_ProcessIdenticalPairs_ParisFoundInSecondRow_WipeFromOtherBoxes(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[4:6, :, 0] = numpy.array([
+            [0, 5, 5,  0, 0, 0,  5, 0, 0],
+            [0, 6, 6,  0, 0, 6,  6, 0, 0],
+        ])
+
+        expected = numpy.array([
+            [0, 5, 5,  0, 0, 0,  0, 0, 0],
+            [0, 6, 6,  0, 0, 0,  0, 0, 0],
+        ])
+
+        process_identical_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack[4:6, :, 0])
+
+    def test_ProcessIdenticalPairs_ParisFoundInSecondRowSecondCol_WipeFromOtherBoxes(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[4:6, :, 1] = numpy.array([
+            [0, 5, 5,  0, 0, 0,  5, 0, 0],
+            [0, 6, 6,  0, 0, 6,  6, 0, 0],
+        ])
+
+        expected = numpy.array([
+            [0, 5, 5,  0, 0, 0,  0, 0, 0],
+            [0, 6, 6,  0, 0, 0,  0, 0, 0],
+        ])
+
+        process_identical_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack[4:6, :, 1])
+
+    def test_ProcessIdenticalPairs_ParisSpanAcrossBoxes_DoNothing(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[4:6, :, 1] = numpy.array([
+            [0, 0, 5,  5, 0, 0,  5, 0, 0],
+            [0, 0, 6,  6, 0, 6,  6, 0, 0],
+        ])
+
+        expected = numpy.array([
+            [0, 0, 5,  5, 0, 0,  5, 0, 0],
+            [0, 0, 6,  6, 0, 6,  6, 0, 0],
+        ])
+
+        process_identical_pairs(candidate_stack)
+        self.assertNumpyEqual(expected, candidate_stack[4:6, :, 1])
+
+    # def test_ProcessIdenticalPairs_ParisInSecondBoxSecondCol_WipeOthers(self):
+    #     candidate_stack = create_candidates_stack()
+    #     candidate_stack[4:6, :, 1] = numpy.array([
+    #         [0, 5, 0,  5, 5, 0,  5, 0, 0],
+    #         [0, 0, 0,  6, 6, 0,  6, 0, 6],
+    #     ])
+    #
+    #     expected = numpy.array([
+    #         [0, 0, 0,  5, 5, 0,  0, 0, 0],
+    #         [0, 0, 0,  6, 6, 0,  0, 0, 0],
+    #     ])
+    #
+    #     process_identical_pairs(candidate_stack)
+    #     self.assertNumpyEqual(expected, candidate_stack[4:6, :, 1])
+
+    # def test_ProcessIdenticalPairs_TwoPairs_DoNothing(self):
+    #     candidate_stack = create_candidates_stack()
+    #     candidate_stack[4:6, :, 1] = numpy.array([
+    #         [0, 5, 5,  5, 5, 0,  5, 0, 0],
+    #         [0, 6, 6,  6, 6, 0,  6, 0, 0],
+    #     ])
+    #
+    #     expected = numpy.array([
+    #         [0, 5, 5,  5, 5, 0,  5, 0, 0],
+    #         [0, 6, 6,  6, 6, 0,  6, 0, 0],
+    #     ])
+    #
+    #     process_identical_pairs(candidate_stack)
+    #     self.assertNumpyEqual(expected, candidate_stack[4:6, :, 1])
 
     @staticmethod
     def get_regular_sudoku():
