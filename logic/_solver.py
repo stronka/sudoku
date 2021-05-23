@@ -87,19 +87,6 @@ def process_annotated_pairs(stack: numpy.array) -> None:
 
 
 def process_identical_pairs(stack: numpy.array) -> None:
-    for j in range(9):
-        for n in range(2):
-            pair_ids = []
-            for k in range(9):
-                candidate = stack[k, n:n+2, j]
-                if candidate.max() and candidate.sum()/candidate.max() == 2:
-                    pair_ids.append(k)
-
-            if len(pair_ids) >= 2:
-                for k in pair_ids:
-                    stack[k, :, j] = 0
-                    stack[k, n:n+2, j] = k+1
-
     return
 
 
