@@ -5,6 +5,44 @@ from logic._solver import *
 
 
 class TestSolver(unittest.TestCase):
+    def test_CreateCandidatesStack_ReturnCorrectStack(self):
+        candidate_stack = create_candidates_stack()
+        self.assertNumpyEqual(numpy.array(range(1, 10)), candidate_stack[:, 0, 0])
+
+    def test_CrossOutSudoku_SudokuEmptyWithOne_CrossOutRow(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[0, 0] = 1
+        expected = numpy.array([1, 0, 0,  0, 0, 0,  0, 0, 0])
+        cross_out_sudoku(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, candidate_stack[0, 0, :])
+
+    def test_CrossOutSudoku_SudokuEmptyWithOneAndTwo_CrossOutSecondRow(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[0, 0] = 1
+        sudoku[0, 1] = 2
+        expected = numpy.array([0, 2, 0,  0, 0, 0,  0, 0, 0])
+        cross_out_sudoku(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, candidate_stack[1, 0, :])
+
+    def test_CrossOutSudoku_SudokuEmptyWithOne_CrossOutFirstCol(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[0, 0] = 1
+        expected = numpy.array([1, 0, 0,  0, 0, 0,  0, 0, 0])
+        cross_out_sudoku(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, candidate_stack[0, :, 0])
+
+    def test_CrossOutSudoku_SudokuEmptyWithOneAndTwo_CrossOutSecondCol(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[0, 0] = 1
+        sudoku[0, 1] = 2
+        expected = numpy.array([2, 0, 0,  0, 0, 0,  0, 0, 0])
+        cross_out_sudoku(candidate_stack, sudoku)
+        self.assertNumpyEqual(expected, candidate_stack[1, :, 1])
+
     @staticmethod
     def get_regular_sudoku():
         return numpy.array([
