@@ -66,7 +66,7 @@ def process_annotated_pairs(stack: numpy.array) -> None:
                 for k in range(9):
                     candidate = stack[k, i, 3*b+n:3*b+n+2]
                     candidate_row = stack[k, i, :]
-                    if candidate_row.sum() == candidate.sum() and candidate.sum()/candidate.max() == 2:
+                    if candidate_row.sum() == candidate.sum() != 0 and candidate.sum()/candidate.max() == 2:
                         non_pair_ks.remove(k)
 
                 if len(non_pair_ks) == 7:
@@ -79,7 +79,7 @@ def process_annotated_pairs(stack: numpy.array) -> None:
                 for k in range(9):
                     candidate = stack[k, 3*b+n:3*b+n+2, j]
                     candidate_col = stack[k, :, j]
-                    if candidate_col.sum() == candidate.sum() and candidate.sum()/candidate.max() == 2:
+                    if candidate_col.sum() == candidate.sum() != 0 and candidate.sum()/candidate.max() == 2:
                         non_pair_ks.remove(k)
 
                 if len(non_pair_ks) == 7:
