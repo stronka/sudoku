@@ -46,6 +46,13 @@ def process_last_elements(stack: numpy.array) -> None:
                 ind = numpy.nonzero(row)[0]
                 stack[:, i, ind] = 0
                 stack[k, i, ind] = k+1
+
+        for j in range(0, 9):
+            col = stack[k, :, j]
+            if col.sum()/col.max() == 1:
+                ind = numpy.nonzero(col)[0]
+                stack[:, ind, j] = 0
+                stack[k, ind, j] = k+1
     return
 
 
@@ -66,6 +73,7 @@ def solve_sudoku(sudoku):
 
     while not check_sudoku_correct(result):
         cross_out_sudoku(candidates_stack, result)
+        process_last_elements(candidates_stack)
         fill = create_sudoku_fill(candidates_stack, result)
 
         if not fill.any():
