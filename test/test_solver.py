@@ -149,21 +149,21 @@ class TestSolver(unittest.TestCase):
         ])
         self.assertSudokuCorrect(brute_force_sudoku(sudoku))
 
-    # def test_BruteForceSudoku_EmptyLastRow_SolveSudoku(self):
-    #     sudoku = numpy.array([
-    #         [7, 2, 5,    6, 4, 3,   9, 1, 8],
-    #         [8, 3, 1,    7, 9, 2,   4, 6, 5],
-    #         [9, 6, 4,    1, 8, 5,   3, 2, 7],
-    #
-    #         [3, 1, 6,    5, 2, 7,   8, 4, 9],
-    #         [2, 4, 7,    9, 6, 8,   1, 5, 3],
-    #         [5, 9, 8,    3, 1, 4,   6, 7, 2],
-    #
-    #         [4, 8, 9,    2, 7, 6,   5, 3, 1],
-    #         [1, 5, 2,    4, 3, 9,   7, 8, 6],
-    #         [0, 0, 0,    0, 0, 0,   0, 0, 0],
-    #     ])
-    #     self.assertSudokuCorrect(brute_force_sudoku(sudoku))
+    def test_BruteForceSudoku_EmptyLastRow_SolveSudoku(self):
+        sudoku = numpy.array([
+            [7, 2, 5,    6, 4, 3,   9, 1, 8],
+            [8, 3, 1,    7, 9, 2,   4, 6, 5],
+            [9, 6, 4,    1, 8, 5,   3, 2, 7],
+
+            [3, 1, 6,    5, 2, 7,   8, 4, 9],
+            [2, 4, 7,    9, 6, 8,   1, 5, 3],
+            [5, 9, 8,    3, 1, 4,   6, 7, 2],
+
+            [4, 8, 9,    2, 7, 6,   5, 3, 1],
+            [1, 5, 2,    4, 3, 9,   7, 8, 6],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+        ])
+        self.assertSudokuCorrect(brute_force_sudoku(sudoku))
 
     def test_BruteForceSudoku_Always_SolveSudoku(self):
         sudoku = self.get_hard_sudoku_for_brute_force()

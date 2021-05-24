@@ -63,8 +63,15 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
         return
     else:
         for row in sudoku:
+            if not row.any():
+                continue  # omit for now because of cost
+
             if not check_row_correct(row):
                 _brute_force_row_inplace(row)
+
+        if not check_sudoku_correct(sudoku):
+            sudoku = sudoku.transpose()
+            _brute_force_inplace(sudoku)
 
 
 def _brute_force_row_inplace(row: numpy.array) -> None:
