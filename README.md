@@ -1,7 +1,7 @@
 # sudoku
 A heuristic based sudoku solver
 
-##TODO:
+=== TODO: ===
 
 * Add brute-force solver on heuristic failure
 * Refactor heuristics out to separate modules
