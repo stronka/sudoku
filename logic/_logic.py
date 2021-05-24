@@ -12,5 +12,6 @@ def check_box_correct(box: numpy.array):
 
 
 def check_sudoku_correct(sudoku: numpy.array):
-    return reduce(lambda x, y: x and check_row_correct(y), sudoku, True)
+    return reduce(lambda x, y: x and check_row_correct(y), sudoku, True) and \
+           reduce(lambda x, y: x and check_row_correct(y), sudoku.transpose(), True)
 

@@ -52,9 +52,7 @@ def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
 
 def brute_force_sudoku(sudoku: numpy.array) -> numpy.array:
     result = sudoku
-
     _brute_force_inplace(result)
-
     return result
 
 
