@@ -77,7 +77,7 @@ def _brute_force_row_inplace(row: numpy.array) -> None:
         return
 
     cols = numpy.where(row == 0)
-    cell = cols[0][-1]
+    cell = cols[0][0]
 
     for candidate in range(1, 10):
         row[cell] = candidate
