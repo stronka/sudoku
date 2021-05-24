@@ -49,16 +49,21 @@ def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
 
 
 def brute_force_sudoku(sudoku: numpy.array) -> numpy.array:
-    return numpy.array([
-        [7, 2, 5,    6, 4, 3,   9, 1, 8],
-        [8, 3, 1,    7, 9, 2,   4, 6, 5],
-        [9, 6, 4,    1, 8, 5,   3, 2, 7],
+    result = sudoku
 
-        [3, 1, 6,    5, 2, 7,   8, 4, 9],
-        [2, 4, 7,    9, 6, 8,   1, 5, 3],
-        [5, 9, 8,    3, 1, 4,   6, 7, 2],
+    if check_sudoku_correct(result):
+        return result
+    else:
+        rows, cols = numpy.where(result == 0)
+        cell = rows[0], cols[0]
 
-        [4, 8, 9,    2, 7, 6,   5, 3, 1],
-        [1, 5, 2,    4, 3, 9,   7, 8, 6],
-        [6, 7, 3,    8, 5, 1,   2, 9, 4],
-    ])
+        candidates = list(range(1, 10))
+        for c in candidates:
+            result[cell] = c
+            if check_sudoku_correct(result):
+                return result
+
+    return result
+
+
+
