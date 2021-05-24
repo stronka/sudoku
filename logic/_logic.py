@@ -12,6 +12,13 @@ def check_box_correct(box: numpy.array):
 
 
 def check_sudoku_correct(sudoku: numpy.array):
-    return reduce(lambda x, y: x and check_row_correct(y), sudoku, True) and \
-           reduce(lambda x, y: x and check_row_correct(y), sudoku.transpose(), True)
+    boxes = True
 
+    for m in range(3):
+        for n in range(3):
+            box = sudoku[3*n:3*n+3, 3*m:3*m+3]
+            boxes = boxes and box.size == len(set(box.flatten()).difference({0}))
+
+    return boxes and \
+           reduce(lambda x, y: x and check_row_correct(y), sudoku, True) and \
+           reduce(lambda x, y: x and check_row_correct(y), sudoku.transpose(), True)
