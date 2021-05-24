@@ -80,4 +80,3 @@ class TestLogic(unittest.TestCase):
             [6, 7, 9, 8, 5, 1, 3, 2, 4]
         ])
         self.assertFalse(check_sudoku_correct(sudoku))
-
