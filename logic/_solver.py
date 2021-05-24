@@ -57,7 +57,7 @@ def brute_force_sudoku(sudoku: numpy.array) -> numpy.array:
 
 
 def _brute_force_inplace(sudoku: numpy.array) -> None:
-    if check_sudoku_correct(sudoku):
+    if check_sudoku_correct(sudoku) or sudoku.all():
         return
     else:
         rows, cols = numpy.where(sudoku == 0)
@@ -65,7 +65,10 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
 
         for candidate in range(1, 10):
             sudoku[cell] = candidate
+            _brute_force_inplace(sudoku)
+
             if check_sudoku_correct(sudoku):
                 return
         else:
-            _brute_force_inplace(sudoku)
+            sudoku[cell] = 0
+            return
