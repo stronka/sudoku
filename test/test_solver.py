@@ -149,10 +149,9 @@ class TestSolver(unittest.TestCase):
         ])
         self.assertSudokuCorrect(brute_force_sudoku(sudoku))
 
-    #
-    # def test_BruteForceSudoku_Always_SolveSudoku(self):
-    #     sudoku = self.get_hard_sudoku_for_brute_force()
-    #     self.assertSudokuCorrect(brute_force_sudoku(sudoku))
+    def test_BruteForceSudoku_Always_SolveSudoku(self):
+        sudoku = self.get_hard_sudoku_for_brute_force()
+        self.assertSudokuCorrect(brute_force_sudoku(sudoku))
 
     def assertSudokuCorrect(self, result):
         self.assertTrue(check_sudoku_correct(result))
