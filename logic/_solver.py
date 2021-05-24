@@ -51,19 +51,21 @@ def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
 def brute_force_sudoku(sudoku: numpy.array) -> numpy.array:
     result = sudoku
 
-    if check_sudoku_correct(result):
-        return result
-    else:
-        rows, cols = numpy.where(result == 0)
-        cell = rows[0], cols[0]
-
-        candidates = list(range(1, 10))
-        for c in candidates:
-            result[cell] = c
-            if check_sudoku_correct(result):
-                return result
+    _brute_force_inplace(result)
 
     return result
 
 
+def _brute_force_inplace(sudoku: numpy.array) -> None:
+    if check_sudoku_correct(sudoku):
+        return
+    else:
+        rows, cols = numpy.where(sudoku == 0)
+        cell = rows[0], cols[0]
 
+        for candidate in range(1, 10):
+            sudoku[cell] = candidate
+            if check_sudoku_correct(sudoku):
+                return
+        else:
+            _brute_force_inplace(sudoku)
