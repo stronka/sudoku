@@ -60,31 +60,19 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
     if check_sudoku_correct(sudoku) or sudoku.all():
         return
     else:
-        for row in sudoku:
-            if not row.any():
-                continue  # omit for now because of cost
+        rows, cols = numpy.where(sudoku == 0)
+        cell = rows[0], cols[0]
 
-            if not check_row_correct(row):
-                _brute_force_row_inplace(row)
+        candidates = set(range(10))\
+            .difference(set(sudoku[cell[0], :]))\
+            .difference(set(sudoku[:, cell[1]]))
 
-        if not check_sudoku_correct(sudoku):
-            sudoku = sudoku.transpose()
+        for candidate in candidates:
+            sudoku[cell] = candidate
             _brute_force_inplace(sudoku)
 
-
-def _brute_force_row_inplace(row: numpy.array) -> None:
-    if check_row_correct(row) or row.all():
-        return
-
-    cols = numpy.where(row == 0)
-    cell = cols[0][0]
-
-    for candidate in range(1, 10):
-        row[cell] = candidate
-        _brute_force_row_inplace(row)
-
-        if check_row_correct(row):
+            if check_sudoku_correct(sudoku):
+                return
+        else:
+            sudoku[cell] = 0
             return
-    else:
-        row[cell] = 0
-        return
