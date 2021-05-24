@@ -65,16 +65,6 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
             if not check_row_correct(row):
                 _brute_force_row_inplace(row)
 
-        # for candidate in range(1, 10):
-        #     sudoku[cell] = candidate
-        #     _brute_force_inplace(sudoku)
-        #
-        #     if check_sudoku_correct(sudoku):
-        #         return
-        # else:
-        #     sudoku[cell] = 0
-        #     return
-
 
 def _brute_force_row_inplace(row: numpy.array) -> None:
     if check_row_correct(row) or row.all():
