@@ -53,11 +53,11 @@ def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
 
 def brute_force_sudoku(sudoku: numpy.array) -> numpy.array:
     result = sudoku
-    _brute_force_inplace(result)
+    brute_force_inplace(result)
     return result
 
 
-def _brute_force_inplace(sudoku: numpy.array) -> None:
+def brute_force_inplace(sudoku: numpy.array) -> None:
     if check_sudoku_correct(sudoku) or sudoku.all():
         return
     else:
@@ -74,7 +74,7 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
 
         for candidate in candidates:
             sudoku[cell] = candidate
-            _brute_force_inplace(sudoku)
+            brute_force_inplace(sudoku)
 
             if check_sudoku_correct(sudoku):
                 return
