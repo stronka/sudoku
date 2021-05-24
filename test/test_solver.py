@@ -53,6 +53,11 @@ class TestSolver(unittest.TestCase):
         result = solve_sudoku(sudoku)
         self.assertSudokuCorrect(result)
 
+    def test_BruteForceSudoku_Always_SudokuCorrect(self):
+        sudoku = self.get_hard_sudoku_for_brute_force()
+        result = brute_force_sudoku(sudoku)
+        self.assertSudokuCorrect(result)
+
     def assertSudokuCorrect(self, result):
         self.assertTrue(check_sudoku_correct(result))
 
@@ -106,5 +111,21 @@ class TestSolver(unittest.TestCase):
             [0, 8, 9,    5, 0, 0,   0, 0, 4],
             [0, 0, 5,    0, 0, 0,   0, 9, 0],
             [2, 0, 0,    0, 0, 0,   5, 0, 0],
+        ])
+
+    @staticmethod
+    def get_hard_sudoku_for_brute_force():
+        return numpy.array([
+            [7, 0, 0,    6, 4, 3,   0, 1, 0],
+            [0, 3, 0,    7, 0, 0,   0, 0, 0],
+            [0, 0, 4,    1, 0, 0,   3, 0, 7],
+
+            [0, 1, 6,    0, 0, 7,   8, 0, 0],
+            [2, 4, 7,    9, 6, 8,   1, 5, 3],
+            [0, 0, 0,    0, 0, 0,   6, 7, 0],
+
+            [0, 0, 9,    0, 7, 6,   5, 0, 0],
+            [0, 0, 0,    0, 0, 9,   7, 8, 0],
+            [0, 7, 0,    0, 5, 0,   0, 0, 4],
         ])
 
