@@ -42,28 +42,40 @@ class TestSolver(unittest.TestCase):
 
     def test_SolveSudoku_Regular_SudokuCorrect(self):
         sudoku = self.get_regular_sudoku()
-        self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
+        result = solve_sudoku(sudoku)
+        self.assertSudokuCorrect(result)
 
     def test_SolveSudoku_Hard_SudokuCorrect(self):
         sudoku = self.get_hard_sudoku()
-        self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
+        result = solve_sudoku(sudoku)
+        self.assertSudokuCorrect(result)
 
     def test_SolveSudoku_Hard2_SudokuCorrect(self):
         sudoku = self.get_hard_sudoku2()
-        self.assertTrue(check_sudoku_correct(solve_sudoku(sudoku)))
+        result = solve_sudoku(sudoku)
+        self.assertSudokuCorrect(result)
+
+    def assertSudokuCorrect(self, result):
+        self.assertTrue(check_sudoku_correct(result))
+
+    @staticmethod
+    def assertNumpyEqual(first: numpy.array, second: numpy):
+        numpy.testing.assert_equal(first, second)
 
     @staticmethod
     def get_regular_sudoku():
         return numpy.array([
-            [0, 6, 0, 3, 0, 5, 0, 8, 0],
-            [8, 0, 0, 0, 0, 0, 0, 0, 9],
-            [4, 5, 0, 0, 0, 0, 0, 6, 7],
-            [0, 0, 0, 2, 0, 4, 0, 0, 0],
-            [2, 7, 0, 9, 0, 8, 0, 4, 3],
-            [0, 0, 0, 7, 0, 1, 0, 0, 0],
-            [9, 2, 0, 0, 0, 0, 0, 3, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 4],
-            [0, 4, 0, 1, 0, 7, 0, 2, 0]
+            [0, 6, 0,   3, 0, 5,   0, 8, 0],
+            [8, 0, 0,   0, 0, 0,   0, 0, 9],
+            [4, 5, 0,   0, 0, 0,   0, 6, 7],
+
+            [0, 0, 0,   2, 0, 4,   0, 0, 0],
+            [2, 7, 0,   9, 0, 8,   0, 4, 3],
+            [0, 0, 0,   7, 0, 1,   0, 0, 0],
+
+            [9, 2, 0,   0, 0, 0,   0, 3, 1],
+            [1, 0, 0,   0, 0, 0,   0, 0, 4],
+            [0, 4, 0,   1, 0, 7,   0, 2, 0]
         ])
 
     @staticmethod
@@ -97,8 +109,4 @@ class TestSolver(unittest.TestCase):
             [0, 0, 5,    0, 0, 0,   0, 9, 0],
             [2, 0, 0,    0, 0, 0,   5, 0, 0],
         ])
-
-    @staticmethod
-    def assertNumpyEqual(first: numpy.array, second: numpy):
-        numpy.testing.assert_equal(first, second)
 
