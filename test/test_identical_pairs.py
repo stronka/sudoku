@@ -1,5 +1,4 @@
 import unittest
-
 from logic.heuristics.identical_pairs import process_identical_pairs
 from logic._solver import *
 

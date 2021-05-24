@@ -1,5 +1,4 @@
 import unittest
-import numpy
 from logic._logic import *
 
 
