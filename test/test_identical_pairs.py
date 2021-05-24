@@ -4,7 +4,7 @@ from logic.heuristics.identical_pairs import process_identical_pairs
 from logic._solver import *
 
 
-class TestSolver(unittest.TestCase):
+class TestIdenticalPairsHeuristic(unittest.TestCase):
     def test_ProcessIdenticalPairs_FullStack_DoNothing(self):
         candidate_stack = create_candidates_stack()
         expected = candidate_stack
