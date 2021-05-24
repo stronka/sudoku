@@ -2,6 +2,7 @@ import numpy
 from itertools import product
 
 from logic import check_sudoku_correct
+from logic._logic import check_row_correct
 from logic.heuristics.annotated_pairs import process_annotated_pairs
 from logic.heuristics.elimination import apply_candidate_elimination
 from logic.heuristics.last_elements import process_last_elements
@@ -60,15 +61,34 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
     if check_sudoku_correct(sudoku) or sudoku.all():
         return
     else:
-        rows, cols = numpy.where(sudoku == 0)
-        cell = rows[0], cols[0]
+        for row in sudoku:
+            if not check_row_correct(row):
+                _brute_force_row_inplace(row)
 
-        for candidate in range(1, 10):
-            sudoku[cell] = candidate
-            _brute_force_inplace(sudoku)
+        # for candidate in range(1, 10):
+        #     sudoku[cell] = candidate
+        #     _brute_force_inplace(sudoku)
+        #
+        #     if check_sudoku_correct(sudoku):
+        #         return
+        # else:
+        #     sudoku[cell] = 0
+        #     return
 
-            if check_sudoku_correct(sudoku):
-                return
-        else:
-            sudoku[cell] = 0
+
+def _brute_force_row_inplace(row: numpy.array) -> None:
+    if check_row_correct(row) or row.all():
+        return
+
+    cols = numpy.where(row == 0)
+    cell = cols[0][-1]
+
+    for candidate in range(1, 10):
+        row[cell] = candidate
+        _brute_force_row_inplace(row)
+
+        if check_row_correct(row):
             return
+    else:
+        row[cell] = 0
+        return

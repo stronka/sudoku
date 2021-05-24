@@ -100,7 +100,7 @@ class TestSolver(unittest.TestCase):
             [6, 7, 3,    8, 5, 1,   2, 0, 0],
         ])
         self.assertSudokuCorrect(brute_force_sudoku(sudoku))
-
+    #
     def test_BruteForceSudoku_SudokuMissingThreeElements_SolveSudoku(self):
         sudoku = numpy.array([
             [7, 2, 5,    6, 4, 3,   9, 1, 8],
@@ -133,9 +133,9 @@ class TestSolver(unittest.TestCase):
         ])
         self.assertSudokuCorrect(brute_force_sudoku(sudoku))
 
-    # def test_BruteForceSudoku_Always_SolveSudoku(self):
-    #     sudoku = self.get_hard_sudoku_for_brute_force()
-    #     self.assertSudokuCorrect(brute_force_sudoku(sudoku))
+    def test_BruteForceSudoku_Always_SolveSudoku(self):
+        sudoku = self.get_hard_sudoku_for_brute_force()
+        self.assertSudokuCorrect(brute_force_sudoku(sudoku))
 
     def assertSudokuCorrect(self, result):
         self.assertTrue(check_sudoku_correct(result))
