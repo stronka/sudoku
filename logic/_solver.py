@@ -21,7 +21,8 @@ def solve_sudoku(sudoku):
             print("Sudoku: \n", sudoku)
             print("Result: \n", result)
             print("Found:  \n", numpy.subtract(result, sudoku))
-            raise Exception("Empty fill!")
+            print("Defaulting to brute force solver")
+            return brute_force_sudoku(result)
 
         result = numpy.add(result, fill)
 
