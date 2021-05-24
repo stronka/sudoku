@@ -6,6 +6,7 @@ from logic._logic import check_row_correct
 from logic.heuristics.annotated_pairs import process_annotated_pairs
 from logic.heuristics.elimination import apply_candidate_elimination
 from logic.heuristics.last_elements import process_last_elements
+from logic.utils.utils import find_box_coords
 
 
 def solve_sudoku(sudoku):
@@ -63,9 +64,13 @@ def _brute_force_inplace(sudoku: numpy.array) -> None:
         rows, cols = numpy.where(sudoku == 0)
         cell = rows[0], cols[0]
 
+        r1, r2 = find_box_coords(cell[0])
+        c1, c2 = find_box_coords(cell[1])
+
         candidates = set(range(10))\
             .difference(set(sudoku[cell[0], :]))\
-            .difference(set(sudoku[:, cell[1]]))
+            .difference(set(sudoku[:, cell[1]]))\
+            .difference(set(sudoku[r1:r2, c1:c2].flatten()))
 
         for candidate in candidates:
             sudoku[cell] = candidate
