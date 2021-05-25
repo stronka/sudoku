@@ -1,8 +1,5 @@
 import unittest
 
-from logic.heuristics.identical_pairs import process_identical_pairs
-from logic._solver import *
-
 
 class TestAnnotatedPairsHeuristic(unittest.TestCase):
     def test_ProcessAnnotatedPairs_FullStack_DoNothing(self):

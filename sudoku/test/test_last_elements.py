@@ -1,5 +1,4 @@
 import unittest
-from logic._solver import *
 
 
 class TestLastElementsHeuristic(unittest.TestCase):

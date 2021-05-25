@@ -1,2 +1,3 @@
 .idea
-logic/_pycache__/
+sudoku/logic/_pycache__/
+build/

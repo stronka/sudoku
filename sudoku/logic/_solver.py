@@ -1,12 +1,11 @@
 import numpy
 from itertools import product
 
-from logic import check_sudoku_correct
-from logic._logic import check_row_correct
-from logic.heuristics.annotated_pairs import process_annotated_pairs
-from logic.heuristics.elimination import apply_candidate_elimination
-from logic.heuristics.last_elements import process_last_elements
-from logic.utils.utils import find_box_coords
+from sudoku.logic import check_sudoku_correct
+from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs
+from sudoku.logic.heuristics.elimination import apply_candidate_elimination
+from sudoku.logic.heuristics.last_elements import process_last_elements
+from sudoku.logic.utils.utils import find_box_coords
 
 
 def solve_sudoku(sudoku):

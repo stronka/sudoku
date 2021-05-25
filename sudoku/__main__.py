@@ -1,6 +1,6 @@
 import numpy
 
-from logic import solve_sudoku
+from sudoku.logic import solve_sudoku
 
 if __name__ == "__main__":
     # TEMPLATE

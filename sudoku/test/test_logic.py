@@ -1,5 +1,5 @@
 import unittest
-from logic._logic import *
+from sudoku.logic._logic import *
 
 
 class TestLogic(unittest.TestCase):

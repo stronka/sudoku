@@ -2,7 +2,7 @@ from itertools import product
 
 import numpy
 
-from logic.utils.utils import find_box_coords
+from sudoku.logic.utils.utils import find_box_coords
 
 
 def apply_candidate_elimination(stack: numpy.array, sudoku: numpy.array) -> None:
