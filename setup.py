@@ -1,15 +1,23 @@
-from setuptools import setup
+from distutils.core import setup
 
 setup(
     name='sudoku',
     version='0.1',
-    description='Heuristic sudoku solver',
+    packages=[
+        'sudoku',
+        'sudoku.logic',
+        'sudoku.logic.utils',
+        'sudoku.logic.heuristics',
+        'sudoku.tests',
+        'sudoku.tests.unit',
+        'sudoku.tests.unit.parser',
+        'sudoku.tests.unit.parser.json',
+        'sudoku.parser',
+        'sudoku.parser.json'
+    ],
+    url='https://github.com/stronka/sudoku',
+    license='',
     author='stronka',
     author_email='stronka.k@gmail.com',
-    packages=[
-        'sudoku'
-    ],
-    install_requires=[
-        'numpy'
-    ],
+    description='Heuristic based solver'
 )
