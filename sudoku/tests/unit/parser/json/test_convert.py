@@ -1,7 +1,10 @@
 import unittest
 import numpy
-from sudoku.parser.json.convert import convert_json_to_numpy
 from numpy.testing import assert_equal
+
+from sudoku.parser.json import convert_json_to_numpy
+
+
 
 
 class TestParserJsonConvert(unittest.TestCase):
