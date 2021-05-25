@@ -1,4 +1,7 @@
 import unittest
+import numpy
+from sudoku.logic._solver import create_candidates_stack
+from sudoku.logic.heuristics.elimination import apply_candidate_elimination
 
 
 class TestEliminationHeuristic(unittest.TestCase):

@@ -1,4 +1,7 @@
 import unittest
+import numpy
+from sudoku.logic._solver import create_candidates_stack, create_sudoku_fill
+from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs
 
 
 class TestAnnotatedPairsHeuristic(unittest.TestCase):

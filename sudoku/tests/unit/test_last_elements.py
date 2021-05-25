@@ -1,4 +1,7 @@
 import unittest
+import numpy
+from sudoku.logic._solver import create_candidates_stack
+from sudoku.logic.heuristics.last_elements import process_last_elements
 
 
 class TestLastElementsHeuristic(unittest.TestCase):
