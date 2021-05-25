@@ -18,8 +18,6 @@ See sudoku/resources/sudoku.json for structure.
 python -m sudoku path/to/file.json
 ```
 
-
-
 ### TODO:
 
 * Make solver configurable
