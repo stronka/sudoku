@@ -1,5 +1,6 @@
 import numpy
-
+import os
+import sys
 from sudoku.logic import solve_sudoku
 
 if __name__ == "__main__":
