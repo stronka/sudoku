@@ -7,7 +7,7 @@ Heuristics may be implemented and configured independently in a plugin manner.
 
 ### Installation
 ```commandline
-pip install git+git://github.com/stronka/sudoku.git
+python -m pip install git+git://github.com/stronka/sudoku.git
 ```
 
 ### Usage
