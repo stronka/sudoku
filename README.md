@@ -13,6 +13,7 @@ python -m pip install git+git://github.com/stronka/sudoku.git
 ### Usage
 You can use sudoku from commandline. Currently it is possible to read input sudoku from a json file. 
 
+Basic usage :
 ```commandline
 python -m sudoku path/to/file.json
 ```
@@ -36,6 +37,12 @@ Input file should look like this:
   ]
 }
 ```
+
+For more help on CLI:
+```commandline
+python -m sudoku -h
+```
+
 
 You can also use solver in your own code:
 ```python
