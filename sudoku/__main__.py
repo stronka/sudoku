@@ -4,6 +4,12 @@ from sudoku.marshalling import json
 from sudoku.parser.file import parse, dump
 
 
+def run_cli():
+    parser = create_parser()
+    args = parser.parse_args()
+    run(args)
+
+
 def run(args):
     sudoku = parse(args.input, json.unmarshall)
     result = solve_sudoku(sudoku)
@@ -12,12 +18,6 @@ def run(args):
         dump(result, args.output, json.marshall)
     else:
         print(result)
-
-
-def run_cli():
-    parser = create_parser()
-    args = parser.parse_args()
-    run(args)
 
 
 if __name__ == "__main__":
