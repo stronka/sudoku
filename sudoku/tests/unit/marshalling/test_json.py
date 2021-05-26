@@ -39,7 +39,6 @@ class TestUnmarshallJson(unittest.TestCase):
         ])
         assert_equal(expected, unmarshall_json(data))
 
-
     def test_Marshall_Always_ReturnJson(self):
         data = numpy.array([
             [0, 0, 2,    0, 0, 0,   0, 0, 8],
