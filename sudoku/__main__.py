@@ -1,11 +1,12 @@
 from sudoku.logic import solve_sudoku
-from sudoku.parser.json import parse
+from sudoku.marshalling import json
+from sudoku.parser.file import parse
 import sys
 
 
 def run():
     if len(sys.argv) > 1:
-        sudoku = parse(sys.argv[1])
+        sudoku = parse(sys.argv[1], json.unmarshall_json)
         print(solve_sudoku(sudoku))
     else:
         print('''
