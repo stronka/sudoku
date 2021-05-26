@@ -25,6 +25,11 @@ def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument('input', help=input_file_help)
-    parser.add_argument('output', nargs='?', default='')
+    parser.add_argument(
+        'output',
+        nargs='?',
+        default='',
+        help='Output file name. If provided results will be writen to that file in JSON format.'
+    )
 
     return parser
