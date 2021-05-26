@@ -2,15 +2,14 @@ from sudoku.cli import create_parser
 from sudoku.logic import solve_sudoku
 from sudoku.marshalling import json
 from sudoku.parser.file import parse, dump
-import sys
 
 
 def run(args):
-    sudoku = parse(args.input, json.unmarshall_json)
+    sudoku = parse(args.input, json.unmarshall)
     result = solve_sudoku(sudoku)
 
     if args.output:
-        dump(result, args.output, json.marshall_json)
+        dump(result, args.output, json.marshall)
     else:
         print(result)
 
