@@ -1,2 +1,2 @@
-from ._convert import convert_json_to_numpy
+from ...marshalling.json import unmarshall_json
 from ._parser import parse

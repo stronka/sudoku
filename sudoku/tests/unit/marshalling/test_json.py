@@ -2,13 +2,11 @@ import unittest
 import numpy
 from numpy.testing import assert_equal
 
-from sudoku.parser.json import convert_json_to_numpy
+from sudoku.marshalling.json import unmarshall_json
 
 
-
-
-class TestParserJsonConvert(unittest.TestCase):
-    def test_Convert_Alawys_ReturnsNumpyArray(self):
+class TestUnmarshallJson(unittest.TestCase):
+    def test_Unmarshall_Alawys_ReturnsNumpyArray(self):
         data = '''
         {
           "sudoku": [
@@ -39,4 +37,4 @@ class TestParserJsonConvert(unittest.TestCase):
             [0, 0, 5,    0, 0, 0,   0, 9, 0],
             [2, 0, 0,    0, 0, 0,   5, 0, 0]
         ])
-        assert_equal(expected, convert_json_to_numpy(data))
+        assert_equal(expected, unmarshall_json(data))
