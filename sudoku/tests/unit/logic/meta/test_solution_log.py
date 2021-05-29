@@ -99,7 +99,7 @@ class TestSolutionLog(unittest.TestCase):
             ],
         }
 
-        self.assertDictEqual(expected, solution.query().get_steps())
+        self.assertDictEqual(expected, solution.where.query().get_steps())
 
     def test_query_QueryCell_ReturnAllStepsUnderThatCell(self):
         solution = SolutionLog()
@@ -115,7 +115,7 @@ class TestSolutionLog(unittest.TestCase):
             ],
         }
 
-        self.assertDictEqual(expected, solution.query('cell == (0, 0)').get_steps())
+        self.assertDictEqual(expected, solution.where.query('cell == (0, 0)').get_steps())
 
     def test_query_QueryAction_ReturnAllStepsUnderThatCell(self):
         solution = SolutionLog()
@@ -131,7 +131,7 @@ class TestSolutionLog(unittest.TestCase):
             ],
         }
 
-        self.assertDictEqual(expected, solution.query('"3" in action').get_steps())
+        self.assertDictEqual(expected, solution.where.query('"3" in action').get_steps())
 
     def test_query_QueryReason_ReturnAllStepsUnderThatCell(self):
         solution = SolutionLog()
@@ -153,7 +153,7 @@ class TestSolutionLog(unittest.TestCase):
             ],
         }
 
-        self.assertDictEqual(expected, solution.query('reason == "Present in box"').get_steps())
+        self.assertDictEqual(expected, solution.where.query('reason == "Present in box"').get_steps())
 
     def test_query_QueryActionAndReason_ReturnCorrect(self):
         solution = SolutionLog()
@@ -169,7 +169,7 @@ class TestSolutionLog(unittest.TestCase):
             ],
         }
 
-        result = solution\
+        result = solution.where \
             .query('reason == "Present in box"')\
             .query('"3" in action')
 
@@ -191,7 +191,7 @@ class TestSolutionLog(unittest.TestCase):
             ],
         }
 
-        solution = solution \
+        solution = solution.where \
             .query('cell == (0, 2)') \
             .query('reason == "Present in box"') \
             .query('"3" in action')

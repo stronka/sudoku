@@ -1,7 +1,9 @@
 import unittest
 import numpy
 from sudoku.logic._solver import create_candidates_stack, create_sudoku_fill
-from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs
+from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs, ANNOTATED_PAIRS_REASON, \
+    ANNOTATED_PAIRS_ACTION
+from sudoku.logic.meta.solution_log import SolutionLog
 
 
 class TestAnnotatedPairsHeuristic(unittest.TestCase):
@@ -170,6 +172,23 @@ class TestAnnotatedPairsHeuristic(unittest.TestCase):
 
         process_annotated_pairs(candidate_stack)
         self.assertNumpyEqual(expected, candidate_stack[:, 1, 3:6])
+
+    def test_ProcessAnnotatedPairs_PassSolutionLog_LogAction(self):
+        candidate_stack = numpy.zeros((9, 9, 9))
+        solution = SolutionLog()
+        candidate_stack[:, 1, 3:6] = numpy.array([
+            [0, 0, 0,  0, 5, 6,  7, 0, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 0, 0,  0, 5, 6,  0, 0, 0],
+        ]).transpose()
+
+        expected = {(1, 3): [{
+            'action': ANNOTATED_PAIRS_ACTION + "7",
+            'reason': ANNOTATED_PAIRS_REASON
+        }]}
+
+        process_annotated_pairs(candidate_stack, solution_log=solution)
+        self.assertDictEqual(expected, solution.where.query('cell == (1, 3) and "7" in action').get_steps())
 
     @staticmethod
     def assertNumpyEqual(first: numpy.array, second: numpy):

@@ -14,6 +14,11 @@ class SolutionLog(object):
             'reason': reason
         })
 
+    @property
+    def where(self):
+        self._query = []
+        return self
+
     def query(self, condition=None):
         if condition:
             self._query.append(condition)
@@ -23,9 +28,9 @@ class SolutionLog(object):
         steps = defaultdict(list)
 
         for cell, cell_steps in self._steps.items():
-            valid = True
-
             for step in cell_steps:
+                valid = True
+
                 action = step['action']
                 reason = step['reason']
 
