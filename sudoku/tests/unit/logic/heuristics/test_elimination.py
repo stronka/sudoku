@@ -1,7 +1,9 @@
 import unittest
 import numpy
 from sudoku.logic._solver import create_candidates_stack
-from sudoku.logic.heuristics.elimination import apply_candidate_elimination
+from sudoku.logic.heuristics.elimination import apply_candidate_elimination, CANDIDATE_ELIMINATION_ACTION, \
+    CANDIDATE_ELIMINATION_REASON_TAKEN
+from sudoku.logic.meta.solution_log import SolutionLog
 
 
 class TestEliminationHeuristic(unittest.TestCase):
@@ -128,6 +130,25 @@ class TestEliminationHeuristic(unittest.TestCase):
 
         apply_candidate_elimination(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[:, 0, 0])
+
+    def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_LogRemovalWithCorrectReason(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[1, 1] = 1
+        solution = SolutionLog()
+
+        apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
+        expected = {
+            (1, 1): [
+                {
+                    'action': CANDIDATE_ELIMINATION_ACTION + "2",
+                    'reason': CANDIDATE_ELIMINATION_REASON_TAKEN
+                }
+            ]
+        }
+        self.assertDictEqual(expected, solution.where.query('cell == (1, 1) and "2" in action').get_steps())
+
+
     @staticmethod
     def assertNumpyEqual(first: numpy.array, second: numpy):
         numpy.testing.assert_equal(first, second)

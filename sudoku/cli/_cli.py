@@ -24,6 +24,7 @@ Example json structure expected:
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
+    parser.add_argument('--log', action='store_true', help="Print solution log")
     parser.add_argument('input', help=input_file_help)
     parser.add_argument(
         'output',

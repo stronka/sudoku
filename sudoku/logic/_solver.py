@@ -8,12 +8,12 @@ from sudoku.logic.heuristics.last_elements import process_last_elements
 from sudoku.logic.utils.utils import find_box_coords
 
 
-def solve_sudoku(sudoku):
+def solve_sudoku(sudoku, solution_log=None):
     result = sudoku
     candidates_stack = create_candidates_stack()
 
     while not check_sudoku_correct(result):
-        apply_heuristics(candidates_stack, result)
+        apply_heuristics(candidates_stack, result, solution_log=solution_log)
 
         fill = create_sudoku_fill(candidates_stack, result)
         if not fill.any():
@@ -29,10 +29,10 @@ def solve_sudoku(sudoku):
     return result
 
 
-def apply_heuristics(candidates_stack, result):
-    apply_candidate_elimination(candidates_stack, result)
+def apply_heuristics(candidates_stack, result, solution_log=None):
+    apply_candidate_elimination(candidates_stack, result, solution_log=solution_log)
     process_last_elements(candidates_stack, result)
-    process_annotated_pairs(candidates_stack, result)
+    process_annotated_pairs(candidates_stack, result, solution_log=solution_log)
 
 
 def create_candidates_stack():
