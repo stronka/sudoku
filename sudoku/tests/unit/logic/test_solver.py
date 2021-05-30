@@ -1,5 +1,6 @@
 import unittest
 from sudoku.logic._solver import *
+from sudoku.logic.meta.solution_log import SolutionLog
 
 
 class TestSolver(unittest.TestCase):
@@ -27,6 +28,20 @@ class TestSolver(unittest.TestCase):
 
         fill = create_sudoku_fill(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, fill)
+
+    def test_CreateSudokuFill_StackIsDefinitive_LogInSolution(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[:, 0, 0] = [0, 0, 0,  0, 5, 0,  0, 0, 0]
+        sudoku = numpy.zeros((9, 9))
+        solution = SolutionLog()
+
+        expected = {(0, 0): [{
+            'action': "Fill: 5",
+            'reason': "Number 5 is the last possible candidate in cell (0, 0)"
+        }]}
+
+        create_sudoku_fill(candidate_stack, sudoku, solution_log=solution)
+        self.assertNumpyEqual(expected, solution.where.query('cell == (0, 0)').get_steps())
 
     def test_CreateSudokuFill_StackIsNonDefiniteOverNonEmptyCell_FillEmpty(self):
         candidate_stack = create_candidates_stack()

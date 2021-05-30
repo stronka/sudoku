@@ -39,13 +39,21 @@ def create_candidates_stack():
     return numpy.array([numpy.ones((9, 9))*k for k in range(1, 10)])
 
 
-def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array) -> numpy.array:
+def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array, **kwargs) -> numpy.array:
     fill = numpy.zeros((9, 9))
+    solution = kwargs.setdefault('solution_log', None)
 
     for i, j in product(range(0, 9), range(0, 9)):
         candidates = stack[:, i, j]
         if sudoku[i, j] == 0 and candidates.sum()/candidates.max() == 1:
-            fill[i, j] = candidates.max()
+            number = int(candidates.max())
+            fill[i, j] = number
+            if solution:
+                solution.add_step(
+                    (i, j),
+                    "Fill: {}".format(number),
+                    "Number {} is the last possible candidate in cell ({}, {})".format(number, i, j)
+                )
 
     return fill
 
