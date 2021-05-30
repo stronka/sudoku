@@ -54,11 +54,55 @@ data = numpy.array([...])
 result = solve_sudoku(data)
 ```
 
+### Solution querying:
+You can query the solution for explanation on given cells or number.
+
+#### Example queries:
+
+Get solution for cell 0, 0 (top left):
+```commandline
+python -m sudoku --query "cell == (0, 0)" resources/sudoku.json
+```
+Get solution for cells 0, 0 and cell 8, 8 (bottom right):
+```commandline
+python -m sudoku --query "cell == (0, 0) or cell == (8, 8)" resources/sudoku.json
+``` 
+All actions on number one:
+```commandline
+python -m sudoku --query "\"1\" in action" resources/sudoku.json
+```
+All actions performed by elimination heuristic:
+```commandline
+python -m sudoku --query "\"elimination\" in reason" resources/sudoku.json 
+```
+
+#### Querying in your own python code:
+```python
+import numpy
+from pprint import pprint
+
+from sudoku.logic import solve_sudoku
+from sudoku.logic.meta.solution_log import SolutionLog
+
+
+data = numpy.array([...])
+solution = SolutionLog()
+result = solve_sudoku(data, solution)
+
+pprint(solution.where.query("cell == (0, 0").get_steps())
+
+complex_query = solution\
+    .where\
+    .query("cell == (1, 1)")\
+    .query("\"elimination\" in reason")\
+    .query("\"1\" in action or \"2\" in action")
+
+pprint(complex_query.get_steps())
+```
+
 ### TODO:
 
 * Make solver configurable
-* Add solution tracking
-* Add explain feature where solution for i.e. given cell can be backtracked
 
 In the future
 
