@@ -26,7 +26,7 @@ def run(args):
 
     if args.query:
         solution_output = solution_log.where.query(args.query).get_steps()
-        pprint(solution_output)
+        pprint(dict(solution_output))
 
 
 if __name__ == "__main__":
