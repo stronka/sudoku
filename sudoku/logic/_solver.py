@@ -15,7 +15,7 @@ def solve_sudoku(sudoku, solution_log=None):
     while not check_sudoku_correct(result):
         apply_heuristics(candidates_stack, result, solution_log=solution_log)
 
-        fill = create_sudoku_fill(candidates_stack, result)
+        fill = create_sudoku_fill(candidates_stack, result, solution_log=solution_log)
         if not fill.any():
             print("Nothing found, but sudoku is not correct!")
             print("Sudoku: \n", sudoku)
