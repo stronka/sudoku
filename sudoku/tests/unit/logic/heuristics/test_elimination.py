@@ -2,7 +2,7 @@ import unittest
 import numpy
 from sudoku.logic._solver import create_candidates_stack
 from sudoku.logic.heuristics.elimination import apply_candidate_elimination, CANDIDATE_ELIMINATION_ACTION, \
-    CANDIDATE_ELIMINATION_REASON_TAKEN, CANDIDATE_ELIMINATION_REASON_COL
+    _REASON_TAKEN, _REASON_COL
 from sudoku.logic.meta.solution_log import SolutionLog
 
 
