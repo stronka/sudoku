@@ -1,7 +1,7 @@
 import unittest
 import numpy
 from sudoku.logic._solver import create_candidates_stack
-from sudoku.logic.heuristics.elimination import apply_candidate_elimination, CANDIDATE_ELIMINATION_ACTION, \
+from sudoku.logic.heuristics.elimination import apply_candidate_elimination, _ACTION_FORMAT, \
     _REASON_TAKEN, _REASON_COL
 from sudoku.logic.meta.solution_log import SolutionLog
 
@@ -141,7 +141,7 @@ class TestEliminationHeuristic(unittest.TestCase):
         expected = {
             (1, 1): [
                 {
-                    'action': CANDIDATE_ELIMINATION_ACTION + "2",
+                    'action': "Remove: 2",
                     'reason': "Candidate elimination: already taken. Number 1 present in cell (1, 1)"
                 }
             ]

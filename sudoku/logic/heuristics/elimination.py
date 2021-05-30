@@ -5,7 +5,7 @@ import numpy
 
 from sudoku.logic.utils.utils import find_box_coords
 
-CANDIDATE_ELIMINATION_ACTION = "Remove: "
+_ACTION_FORMAT = "Remove: {}"
 
 _NUMBER_FORMAT = "Number {} present in cell ({}, {})"
 _REASON_TAKEN = "Candidate elimination: already taken. " + _NUMBER_FORMAT
@@ -64,6 +64,6 @@ def log_solution_step(solution, stack, number_cell, number, candidate_cell, cand
     if stack[candidate-1, candidate_cell[0], candidate_cell[1]] != 0:
         solution.add_step(
             candidate_cell,
-            CANDIDATE_ELIMINATION_ACTION + str(candidate),
+            _ACTION_FORMAT.format(candidate),
             reason.format(number, number_cell[0], number_cell[1])
         )
