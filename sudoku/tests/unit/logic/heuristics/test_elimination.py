@@ -2,7 +2,7 @@ import unittest
 import numpy
 from sudoku.logic._solver import create_candidates_stack
 from sudoku.logic.heuristics.elimination import apply_candidate_elimination, CANDIDATE_ELIMINATION_ACTION, \
-    CANDIDATE_ELIMINATION_REASON_TAKEN
+    CANDIDATE_ELIMINATION_REASON_TAKEN, CANDIDATE_ELIMINATION_REASON_COL
 from sudoku.logic.meta.solution_log import SolutionLog
 
 
@@ -131,7 +131,7 @@ class TestEliminationHeuristic(unittest.TestCase):
         apply_candidate_elimination(candidate_stack, sudoku)
         self.assertNumpyEqual(expected, candidate_stack[:, 0, 0])
 
-    def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_LogRemovalWithCorrectReason(self):
+    def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_LogNumberAlreadyTaken(self):
         candidate_stack = create_candidates_stack()
         sudoku = numpy.zeros((9, 9))
         sudoku[1, 1] = 1
@@ -142,12 +142,50 @@ class TestEliminationHeuristic(unittest.TestCase):
             (1, 1): [
                 {
                     'action': CANDIDATE_ELIMINATION_ACTION + "2",
-                    'reason': CANDIDATE_ELIMINATION_REASON_TAKEN
+                    'reason': "Candidate elimination: already taken. Number 1 present in cell (1, 1)"
                 }
             ]
         }
         self.assertDictEqual(expected, solution.where.query('cell == (1, 1) and "2" in action').get_steps())
 
+    def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_ColumnRemovalWithCorrectReason(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[1, 1] = 1
+        solution = SolutionLog()
+
+        expected = "Candidate elimination: present in column. Number 1 present in cell (1, 1)"
+
+        apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
+        result = solution.where.query('cell == (2, 1) and "1" in action').get_steps()[(2, 1)][0]['reason']
+
+        self.assertEqual(expected, result)
+
+    def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_RowRemovalWithCorrectReason(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[1, 1] = 1
+        solution = SolutionLog()
+
+        expected = "Candidate elimination: present in row. Number 1 present in cell (1, 1)"
+
+        apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
+        result = solution.where.query('cell == (1, 2) and "1" in action').get_steps()[(1, 2)][0]['reason']
+
+        self.assertEqual(expected, result)
+
+    def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_BoxRemovalWithCorrectReason(self):
+        candidate_stack = create_candidates_stack()
+        sudoku = numpy.zeros((9, 9))
+        sudoku[1, 1] = 1
+        solution = SolutionLog()
+
+        expected = "Candidate elimination: present in box. Number 1 present in cell (1, 1)"
+
+        apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
+        result = solution.where.query('cell == (2, 2) and "1" in action').get_steps()[(2, 2)][0]['reason']
+
+        self.assertEqual(expected, result)
 
     @staticmethod
     def assertNumpyEqual(first: numpy.array, second: numpy):
