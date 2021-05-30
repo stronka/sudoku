@@ -1,8 +1,7 @@
 import unittest
 import numpy
-from sudoku.logic._solver import create_candidates_stack, create_sudoku_fill
-from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs, ANNOTATED_PAIRS_REASON, \
-    ANNOTATED_PAIRS_ACTION
+from sudoku.logic._solver import create_candidates_stack
+from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs
 from sudoku.logic.meta.solution_log import SolutionLog
 
 
@@ -183,8 +182,8 @@ class TestAnnotatedPairsHeuristic(unittest.TestCase):
         ]).transpose()
 
         expected = {(1, 3): [{
-            'action': ANNOTATED_PAIRS_ACTION + "7",
-            'reason': ANNOTATED_PAIRS_REASON
+            'action': "Remove: 7",
+            'reason': "Annotated pairs: (5, 6) pair in cells (1, 3) and (1, 5)"
         }]}
 
         process_annotated_pairs(candidate_stack, solution_log=solution)

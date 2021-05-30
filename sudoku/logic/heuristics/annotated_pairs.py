@@ -1,22 +1,25 @@
 import numpy
 
 
-ANNOTATED_PAIRS_REASON = "Annotated pairs: "
-ANNOTATED_PAIRS_ACTION = "Remove "
+_REASON = "Annotated pairs: ({}, {}) pair in cells ({}, {}) and ({}, {})"
+_ACTION = "Remove: {}"
 
 
+# TODO: refactor this function because it's long and ugly
 def process_annotated_pairs(stack: numpy.array, *args, **kwargs) -> None:
     solution_log = kwargs.setdefault('solution_log')
 
-    def log(cell, non_pair_ks_, reason=""):
+    def log(pair_cells, non_pair_ks_):
         if solution_log:
-            for k_ in non_pair_ks_:
-                if stack[k_, cell[0], cell[1]] != 0:
-                    solution_log.add_step(
-                        cell,
-                        ANNOTATED_PAIRS_ACTION + str(k_+1),
-                        ANNOTATED_PAIRS_REASON + reason
-                    )
+            pair = tuple(set(range(0, 9)).difference(set(non_pair_ks_)))
+            for cell in pair_cells:
+                for k_ in non_pair_ks_:
+                    if stack[k_, cell[0], cell[1]] != 0:
+                        solution_log.add_step(
+                            cell,
+                            _ACTION.format(k_+1),
+                            _REASON.format(pair[0]+1, pair[1]+1, pair_cells[0][0], pair_cells[0][1], pair_cells[1][0], pair_cells[1][1])
+                        )
 
     for b in range(3):
         for i in range(9):
@@ -30,8 +33,7 @@ def process_annotated_pairs(stack: numpy.array, *args, **kwargs) -> None:
                         non_pair_ks.remove(k)
 
                 if len(non_pair_ks) == 7:
-                    log((i, n), non_pair_ks)
-                    log((i, m), non_pair_ks)
+                    log(((i, n), (i, m)), non_pair_ks)
 
                     stack[non_pair_ks, i, n] = 0
                     stack[non_pair_ks, i, m] = 0
@@ -47,10 +49,8 @@ def process_annotated_pairs(stack: numpy.array, *args, **kwargs) -> None:
                         non_pair_ks.remove(k)
 
                 if len(non_pair_ks) == 7:
-                    log((n, j), non_pair_ks)
-                    log((m, j), non_pair_ks)
+                    log(((n, j), (m, j)), non_pair_ks)
 
                     stack[non_pair_ks, n, j] = 0
                     stack[non_pair_ks, m, j] = 0
-
     return
