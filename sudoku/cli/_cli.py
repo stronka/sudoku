@@ -20,11 +20,30 @@ Example json structure expected:
   ]
 }'''
 
+query_help = '''
+Query to filter out and print solution process. Currently querying supports:
+    - cell
+    - action
+    - reason
+Example queries:
+    Get solution for cell 0, 0 (top left):
+    __main__.py --query \"cell == (0, 0)\" resources/sudoku.json 
+    
+    Get solution for cells 0, 0 and cell 8, 8 (bottom right):
+    __main__.py --query \"cell == (0, 0) or cell == (8, 8)\" resources/sudoku.json
+     
+    All actions on number one:
+    __main__.py --query \"\\\"1\\\" in action\" resources/sudoku.json
+    
+    All actions performed by elimination heuristic:
+    __main__.py --query \"\\\"elimination\\\" in reason\" resources/sudoku.json 
+'''
+
 
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
-    parser.add_argument('--log', action='store_true', help="Print solution log")
+    parser.add_argument('--query', help=query_help)
     parser.add_argument('input', help=input_file_help)
     parser.add_argument(
         'output',
