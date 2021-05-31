@@ -95,7 +95,7 @@ Solution query result:
  {'action': 'Remove 1', 'cell': (2, 1), 'reason': 'Last position in row: Cell (2, 1) is last possible location for number 3'},
  {'action': 'Remove: 7', 'cell': (0, 1), 'reason': 'Candidate elimination: present in row. Number 7 present in cell (0, 4)'},
  {'action': 'Remove: 1', 'cell': (5, 1), 'reason': 'Candidate elimination: present in box. Number 1 present in cell (4, 0)'},
- {'action': 'Remove 4', 'cell': (0, 1), 'reason': 'Last position in column: Cell (0, 1) is last possible location for number 1'},  {'action': 'Fill: 1', 'cell': (0, 1), 'reason': 'Number 1 is the last possible candidate in cell (0, 1)'}]
+ {'action': 'Remove 4', 'cell': (0, 1), 'reason': 'Last position in column: Cell (0, 1) is last possible location for number 1'},
  {'action': 'Fill: 1', 'cell': (0, 1), 'reason': 'Number 1 is the last possible candidate in cell (0, 1)'}]
 ```
 
