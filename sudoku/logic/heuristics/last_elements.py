@@ -2,7 +2,7 @@ import numpy
 
 _ACTION = "Remove {}"
 _REASON_ROW = "Last position in row: Cell ({}, {}) is last possible location for number {}"
-_REASON_COL = "Last position in col: Cell ({}, {}) is last possible location for number {}"
+_REASON_COL = "Last position in column: Cell ({}, {}) is last possible location for number {}"
 
 
 def process_last_elements(stack: numpy.array, *args, **kwargs) -> None:
@@ -14,6 +14,7 @@ def process_last_elements(stack: numpy.array, *args, **kwargs) -> None:
             if row.sum() and row.sum()/row.max() == 1:
                 ind = numpy.nonzero(row)[0]
                 number = int(k+1)
+
                 log_solution_steps(solution_log, number, (i, ind[0]), _REASON_ROW)
 
                 stack[:, i, ind] = 0
@@ -24,6 +25,9 @@ def process_last_elements(stack: numpy.array, *args, **kwargs) -> None:
             if col.sum() and col.sum()/col.max() == 1:
                 ind = numpy.nonzero(col)[0]
                 number = int(k+1)
+
+                log_solution_steps(solution_log, number, (ind[0], j), _REASON_COL)
+
                 stack[:, ind, j] = 0
                 stack[k, ind, j] = number
     return
