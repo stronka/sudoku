@@ -36,7 +36,7 @@ def apply_heuristics(candidates_stack, result, solution_log=None):
 
 
 def create_candidates_stack():
-    return numpy.array([numpy.ones((9, 9))*k for k in range(1, 10)])
+    return numpy.array([numpy.ones((9, 9))*k for k in range(1, 10)]).astype(int)
 
 
 def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array, **kwargs) -> numpy.array:
@@ -55,7 +55,7 @@ def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array, **kwargs) -> num
                     "Number {} is the last possible candidate in cell ({}, {})".format(number, i, j)
                 )
 
-    return fill
+    return fill.astype(int)
 
 
 def brute_force_sudoku(sudoku: numpy.array) -> numpy.array:

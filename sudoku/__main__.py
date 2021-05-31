@@ -20,17 +20,20 @@ def run(args):
     result = solve_sudoku(sudoku, solution_log=solution_log)
 
     if args.i:
-        print(sudoku)
+        print("Input sudoku: ")
+        pprint(sudoku)
 
     if args.o:
-        print(result)
+        print("Solution: ")
+        pprint(result)
+
+    if args.query:
+        print("Solution query result: ")
+        solution_output = solution_log.where.query(args.query).get_steps()
+        pprint(solution_output, width=160)
 
     if args.output:
         dump(result, args.output, json.marshall)
-
-    if args.query:
-        solution_output = solution_log.where.query(args.query).get_steps()
-        pprint(solution_output, width=160)
 
 
 if __name__ == "__main__":
