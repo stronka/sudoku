@@ -5,11 +5,12 @@ class SolutionLog(object):
     __slots__ = ['_steps', '_query']
 
     def __init__(self):
-        self._steps = defaultdict(list)
+        self._steps = []
         self._query = []
 
     def add_step(self, cell, action, reason):
-        self._steps[cell].append({
+        self._steps.append({
+            'cell': cell,
             'action': action,
             'reason': reason
         })
@@ -27,21 +28,21 @@ class SolutionLog(object):
     def get_steps(self):
         steps = []
 
-        for cell, cell_steps in self._steps.items():
-            for step in cell_steps:
-                valid = True
+        for step in self._steps:
+            valid = True
 
-                action = step['action']
-                reason = step['reason']
+            cell = step['cell']
+            action = step['action']
+            reason = step['reason']
 
-                for condition in self._query:
-                    valid = valid and eval(condition)
+            for condition in self._query:
+                valid = valid and eval(condition)
 
-                if valid:
-                    steps.append({
-                        'cell': cell,
-                        'action': action,
-                        'reason': reason
-                    })
+            if valid:
+                steps.append({
+                    'cell': cell,
+                    'action': action,
+                    'reason': reason
+                })
 
         return steps

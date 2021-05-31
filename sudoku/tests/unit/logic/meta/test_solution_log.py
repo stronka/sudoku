@@ -10,22 +10,7 @@ class TestSolutionLog(unittest.TestCase):
 
     def test_getSteps_HasStepsList_ReturnThatDict(self):
         solution = SolutionLog()
-        steps = {
-            (0, 0): [
-                {
-                    'action': "Cross out 3",
-                    'reason': "Present in box"
-                }
-            ],
-            (1, 0): [
-                {
-                    'action': "Cross out 4",
-                    'reason': "Present in box"
-                }
-            ],
-        }
-
-        expected = [
+        steps = [
             {
                 'cell': (0, 0),
                 'action': "Cross out 3",
@@ -41,7 +26,7 @@ class TestSolutionLog(unittest.TestCase):
         solution._steps = steps
 
         result = solution.get_steps()
-        self.assertEqual(expected, result)
+        self.assertEqual(steps, result)
 
     def test_addStep_Always_AddThatStepUnderCellKey(self):
         solution = SolutionLog()
