@@ -190,7 +190,7 @@ class TestEliminationHeuristic(unittest.TestCase):
         solution = SolutionLog()
 
         apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
-        result = solution.where.query('cell == (1, 1) and "elimination" in action').get_steps()
+        result = solution.where.query('cell == (1, 1)').get_steps()
 
         self.assertEqual(0, len(result))
 

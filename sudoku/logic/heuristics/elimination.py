@@ -42,16 +42,19 @@ def log_solution_steps(stack, number, i, j, solution=None):
         log_solution_step(solution, stack, (i, j), number, candidate_cell, reason)
 
     for i_ in range(9):
-        _log((i_, j), _REASON_COL)
+        if i_ != i:
+            _log((i_, j), _REASON_COL)
 
     for j_ in range(9):
-        _log((i, j_), _REASON_ROW)
+        if j_ != j:
+            _log((i, j_), _REASON_ROW)
 
     i1, i2 = find_box_coords(i)
     j1, j2 = find_box_coords(j)
 
     for i_, j_ in product(range(i1, i2), range(j1, j2)):
-        _log((i_, j_), _REASON_BOX)
+        if i_ != i and j_ != j:
+            _log((i_, j_), _REASON_BOX)
 
 
 def log_solution_step(solution, stack, number_cell, number, candidate_cell, reason):
