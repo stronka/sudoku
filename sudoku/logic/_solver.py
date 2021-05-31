@@ -31,7 +31,7 @@ def solve_sudoku(sudoku, solution_log=None):
 
 def apply_heuristics(candidates_stack, result, solution_log=None):
     apply_candidate_elimination(candidates_stack, result, solution_log=solution_log)
-    process_last_elements(candidates_stack, result)
+    process_last_elements(candidates_stack, result, solution_log=solution_log)
     process_annotated_pairs(candidates_stack, result, solution_log=solution_log)
 
 
