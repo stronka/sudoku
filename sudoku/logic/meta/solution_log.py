@@ -25,7 +25,7 @@ class SolutionLog(object):
         return self
 
     def get_steps(self):
-        steps = defaultdict(list)
+        steps = []
 
         for cell, cell_steps in self._steps.items():
             for step in cell_steps:
@@ -38,7 +38,8 @@ class SolutionLog(object):
                     valid = valid and eval(condition)
 
                 if valid:
-                    steps[cell].append({
+                    steps.append({
+                        'cell': cell,
                         'action': action,
                         'reason': reason
                     })

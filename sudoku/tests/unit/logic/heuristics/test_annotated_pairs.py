@@ -181,13 +181,14 @@ class TestAnnotatedPairsHeuristic(unittest.TestCase):
             [0, 0, 0,  0, 5, 6,  0, 0, 0],
         ]).transpose()
 
-        expected = {(1, 3): [{
+        expected = [{
+            'cell': (1, 3),
             'action': "Remove: 7",
             'reason': "Annotated pairs: (5, 6) pair in cells (1, 3) and (1, 5)"
-        }]}
+        }]
 
         process_annotated_pairs(candidate_stack, solution_log=solution)
-        self.assertDictEqual(expected, solution.where.query('cell == (1, 3) and "7" in action').get_steps())
+        self.assertListEqual(expected, solution.where.query('cell == (1, 3) and "7" in action').get_steps())
 
     def test_ProcessAnnotatedPairs_PassSolutionLog_DoNotLogRemovalOfZero(self):
         candidate_stack = numpy.zeros((9, 9, 9))

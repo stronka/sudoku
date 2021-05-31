@@ -35,13 +35,14 @@ class TestSolver(unittest.TestCase):
         sudoku = numpy.zeros((9, 9))
         solution = SolutionLog()
 
-        expected = {(0, 0): [{
+        expected = [{
+            'cell': (0, 0),
             'action': "Fill: 5",
             'reason': "Number 5 is the last possible candidate in cell (0, 0)"
-        }]}
+        }]
 
         create_sudoku_fill(candidate_stack, sudoku, solution_log=solution)
-        self.assertNumpyEqual(expected, solution.where.query('cell == (0, 0)').get_steps())
+        self.assertListEqual(expected, solution.where.query('cell == (0, 0)').get_steps())
 
     def test_CreateSudokuFill_StackIsNonDefiniteOverNonEmptyCell_FillEmpty(self):
         candidate_stack = create_candidates_stack()

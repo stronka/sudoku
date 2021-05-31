@@ -137,15 +137,12 @@ class TestEliminationHeuristic(unittest.TestCase):
         solution = SolutionLog()
 
         apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
-        expected = {
-            (1, 1): [
-                {
+        expected = [{
+                    'cell': (1, 1),
                     'action': "Remove: 2",
                     'reason': "Candidate elimination: already taken. Number 1 present in cell (1, 1)"
-                }
-            ]
-        }
-        self.assertDictEqual(expected, solution.where.query('cell == (1, 1) and "2" in action').get_steps())
+        }]
+        self.assertListEqual(expected, solution.where.query('cell == (1, 1) and "2" in action').get_steps())
 
     def test_ApplyCandidateElimination_SudokuWithOneAndEmptyFirstCell_ColumnRemovalWithCorrectReason(self):
         candidate_stack = create_candidates_stack()
@@ -156,7 +153,7 @@ class TestEliminationHeuristic(unittest.TestCase):
         expected = "Candidate elimination: present in column. Number 1 present in cell (1, 1)"
 
         apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
-        result = solution.where.query('cell == (2, 1) and "1" in action').get_steps()[(2, 1)][0]['reason']
+        result = solution.where.query('cell == (2, 1) and "1" in action').get_steps()[0]['reason']
 
         self.assertEqual(expected, result)
 
@@ -169,7 +166,7 @@ class TestEliminationHeuristic(unittest.TestCase):
         expected = "Candidate elimination: present in row. Number 1 present in cell (1, 1)"
 
         apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
-        result = solution.where.query('cell == (1, 2) and "1" in action').get_steps()[(1, 2)][0]['reason']
+        result = solution.where.query('cell == (1, 2) and "1" in action').get_steps()[0]['reason']
 
         self.assertEqual(expected, result)
 
@@ -182,7 +179,7 @@ class TestEliminationHeuristic(unittest.TestCase):
         expected = "Candidate elimination: present in box. Number 1 present in cell (1, 1)"
 
         apply_candidate_elimination(candidate_stack, sudoku, solution_log=solution)
-        result = solution.where.query('cell == (2, 2) and "1" in action').get_steps()[(2, 2)][0]['reason']
+        result = solution.where.query('cell == (2, 2) and "1" in action').get_steps()[0]['reason']
 
         self.assertEqual(expected, result)
 
