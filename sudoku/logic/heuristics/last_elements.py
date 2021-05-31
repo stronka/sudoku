@@ -15,7 +15,7 @@ def process_last_elements(stack: numpy.array, *args, **kwargs) -> None:
                 ind = numpy.nonzero(row)[0]
                 number = int(k+1)
 
-                log_solution_steps(solution_log, number, (i, ind[0]), _REASON_ROW)
+                log_solution_steps(solution_log, stack, number, (i, ind[0]), _REASON_ROW)
 
                 stack[:, i, ind] = 0
                 stack[k, i, ind] = number
@@ -26,15 +26,15 @@ def process_last_elements(stack: numpy.array, *args, **kwargs) -> None:
                 ind = numpy.nonzero(col)[0]
                 number = int(k+1)
 
-                log_solution_steps(solution_log, number, (ind[0], j), _REASON_COL)
+                log_solution_steps(solution_log, stack, number, (ind[0], j), _REASON_COL)
 
                 stack[:, ind, j] = 0
                 stack[k, ind, j] = number
     return
 
 
-def log_solution_steps(solution, number, cell, reason):
+def log_solution_steps(solution, stack, number, cell, reason):
     if solution:
         for candidate in range(1, 10):
-            if candidate != number:
+            if candidate != number and stack[candidate-1, cell[0], cell[1]] != 0:
                 solution.add_step(cell, _ACTION.format(candidate), reason.format(cell[0], cell[1], number))

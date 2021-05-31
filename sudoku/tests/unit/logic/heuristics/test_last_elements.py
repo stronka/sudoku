@@ -123,6 +123,27 @@ class TestLastElementsHeuristic(unittest.TestCase):
         process_last_elements(candidate_stack, solution_log=solution_log)
         self.assertListEqual(expected, solution_log.where.query('cell == (0, 4)').get_steps())
 
+    def test_ProcessLastElements_LastElementInRowFound_DoNotLogWipeOnEmptyCandidates(self):
+        candidate_stack = create_candidates_stack()
+        solution_log = SolutionLog()
+        candidate_stack[4, 0, :] = 0
+        candidate_stack[4, 0, 4] = 5
+
+        candidate_stack[5, 0, 4] = 0
+        candidate_stack[6, 0, 4] = 0
+
+        expected = [
+            {'cell': (0, 4), 'action': "Remove 1", 'reason': "Last position in row: Cell (0, 4) is last possible location for number 5"},
+            {'cell': (0, 4), 'action': "Remove 2", 'reason': "Last position in row: Cell (0, 4) is last possible location for number 5"},
+            {'cell': (0, 4), 'action': "Remove 3", 'reason': "Last position in row: Cell (0, 4) is last possible location for number 5"},
+            {'cell': (0, 4), 'action': "Remove 4", 'reason': "Last position in row: Cell (0, 4) is last possible location for number 5"},
+            {'cell': (0, 4), 'action': "Remove 8", 'reason': "Last position in row: Cell (0, 4) is last possible location for number 5"},
+            {'cell': (0, 4), 'action': "Remove 9", 'reason': "Last position in row: Cell (0, 4) is last possible location for number 5"},
+        ]
+
+        process_last_elements(candidate_stack, solution_log=solution_log)
+        self.assertListEqual(expected, solution_log.where.query('cell == (0, 4)').get_steps())
+
     @staticmethod
     def assertNumpyEqual(first: numpy.array, second: numpy):
         numpy.testing.assert_equal(first, second)
