@@ -15,7 +15,7 @@ You can use sudoku from commandline. Currently it is possible to read input sudo
 
 Basic usage :
 ```commandline
-python -m sudoku path/to/file.json
+python -m sudoku -o path/to/file.json
 ```
 
 Input file should look like this:
