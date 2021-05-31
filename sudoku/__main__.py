@@ -19,10 +19,14 @@ def run(args):
     solution_log = SolutionLog() if args.query else None
     result = solve_sudoku(sudoku, solution_log=solution_log)
 
+    if args.i:
+        print(sudoku)
+
+    if args.o:
+        print(result)
+
     if args.output:
         dump(result, args.output, json.marshall)
-    else:
-        print(result)
 
     if args.query:
         solution_output = solution_log.where.query(args.query).get_steps()

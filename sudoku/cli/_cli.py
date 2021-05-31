@@ -43,6 +43,8 @@ Example queries:
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
+    parser.add_argument('-i', action='store_true', help="Print input")
+    parser.add_argument('-o', action='store_true', help="Print output")
     parser.add_argument('--query', help=query_help)
     parser.add_argument('input', help=input_file_help)
     parser.add_argument(
