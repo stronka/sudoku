@@ -93,9 +93,9 @@ pprint(solution.where.query("cell == (0, 0").get_steps())
 
 complex_query = solution\
     .where\
-    .query("cell == (1, 1)")\
-    .query("\"elimination\" in reason")\
-    .query("\"1\" in action or \"2\" in action")
+    .query('cell == (1, 1)')\
+    .query('"elimination" in reason')\
+    .query('"1" in action or "2" in action')
 
 pprint(complex_query.get_steps())
 ```
