@@ -169,3 +169,17 @@ class TestLastElementsHeuristic(unittest.TestCase):
 
         process_candidate_lines(candidate_stack, solution_log=solution_log)
         self.assertListEqual(expected, solution_log.get_steps())
+
+    def test_ProcessCandidateLines_LineInColumnCandidatesInFirstBox_LogSolutionReasonCorrectly(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[3, :, :] = 0
+        candidate_stack[3, 0, :] = [4, 4, 0,  0, 4, 0,  0, 0, 4]
+        solution_log = SolutionLog()
+
+        expected = [
+            {'cell': (0, 4), 'action': "Remove 4", 'reason': "Candidate line: candidates in cells (0, 0) and (0, 1) form a line."},
+            {'cell': (0, 8), 'action': "Remove 4", 'reason': "Candidate line: candidates in cells (0, 0) and (0, 1) form a line."},
+        ]
+
+        process_candidate_lines(candidate_stack, solution_log=solution_log)
+        self.assertListEqual(expected, solution_log.get_steps())

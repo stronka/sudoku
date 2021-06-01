@@ -6,6 +6,7 @@ import numpy
 from sudoku.logic.utils.utils import find_box_coords
 
 _ACTION = "Remove {}"
+_REASON_ROW = "Candidate line: candidates in cells ({0}, {1}) and ({0}, {2}) form a line."
 _REASON_COL = "Candidate line: candidates in cells ({1}, {0}) and ({2}, {0}) form a line."
 
 
@@ -36,6 +37,17 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
 
                     stack[candidate, row, 0:3*b] = 0
                     stack[candidate, row, 3*b+3:9] = 0
+
+                    if solution_log:
+                        for j in numpy.argwhere(initial_candidate_layer[row, :] > stack[candidate, row, :]).flatten():
+                            solution_log.add_step(
+                                (row, j),
+                                _ACTION.format(int(candidate + 1)),
+                                _REASON_ROW.format(
+                                    row, *numpy.argwhere(stack[candidate, row, :] > 0).flatten()
+                                )
+                            )
+
                     done = True
 
             if rollback:
