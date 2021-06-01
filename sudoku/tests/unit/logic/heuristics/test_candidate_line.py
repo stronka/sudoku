@@ -158,3 +158,14 @@ class TestLastElementsHeuristic(unittest.TestCase):
 
         process_candidate_lines(candidate_stack, solution_log=solution_log)
         self.assertListEqual(expected, solution_log.get_steps())
+
+    def test_ProcessCandidateLines_LineInColumnCandidatesInFirstAndLastBox_NothingAddedToSolutionLog(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[4, :, :] = 0
+        candidate_stack[4, :, 5] = [5, 5, 0,  0, 5, 0,  0, 5, 5]
+        solution_log = SolutionLog()
+
+        expected = []
+
+        process_candidate_lines(candidate_stack, solution_log=solution_log)
+        self.assertListEqual(expected, solution_log.get_steps())

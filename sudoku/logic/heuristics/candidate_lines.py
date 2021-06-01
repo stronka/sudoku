@@ -9,7 +9,6 @@ _ACTION = "Remove {}"
 _REASON_COL = "Candidate line: candidates in cells ({1}, {0}) and ({2}, {0}) form a line."
 
 
-
 def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
     solution_log = kwargs.setdefault("solution_log", None)
 
@@ -47,6 +46,8 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
 
             done = False
             rollback = False
+            if solution_log:
+                solution_log.begin_transaction()
 
             for b in range(3):
                 box_col = initial_stack_col[3*b:3*b+3]
@@ -77,6 +78,8 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
                     done = True
 
             if rollback:
+                if solution_log:
+                    solution_log.rollback()
                 stack[candidate, :, col] = initial_stack_col
 
     return
