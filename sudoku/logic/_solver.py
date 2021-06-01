@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import numpy
 from itertools import product
 
@@ -19,7 +21,8 @@ def solve_sudoku(sudoku, solution_log=None):
         fill = create_sudoku_fill(candidates_stack, result, solution_log=solution_log)
         if not fill.any():
             print("Nothing found, but sudoku is not correct!")
-            print("Found with heuristics:  \n", numpy.subtract(result, sudoku))
+            print("Found with heuristics:")
+            pprint(numpy.subtract(result, sudoku))
             print("Defaulting to brute force solver")
             return brute_force_sudoku(result)
 
