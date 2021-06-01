@@ -17,10 +17,12 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
         initial_candidate_layer = copy.copy(stack[candidate, :, :])
 
         for row in range(9):
+            initial_stack_row = initial_candidate_layer[row, :]
 
             done = False
             rollback = False
-            initial_stack_row = initial_candidate_layer[row, :]
+            if solution_log:
+                solution_log.begin_transaction()
 
             for b in range(3):
                 box_row = initial_stack_row[3*b:3*b+3]
@@ -51,6 +53,8 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
                     done = True
 
             if rollback:
+                if solution_log:
+                    solution_log.rollback()
                 stack[candidate, row, :] = initial_stack_row
 
         for col in range(9):
