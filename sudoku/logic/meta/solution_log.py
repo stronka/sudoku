@@ -2,18 +2,35 @@ from collections import defaultdict
 
 
 class SolutionLog(object):
-    __slots__ = ['_steps', '_query']
+    __slots__ = ['_steps', '_query', '_transaction_active', '_transaction_steps']
 
     def __init__(self):
         self._steps = []
         self._query = []
 
+        self._transaction_active = False
+        self._transaction_steps = []
+
+    def begin_transaction(self):
+        self.commit()
+        self._transaction_active = True
+
+    def commit(self):
+        self._steps.extend(self._transaction_steps)
+        self._end_transaction()
+
+    def rollback(self):
+        self._end_transaction()
+
+    def _end_transaction(self):
+        self._transaction_steps = []
+        self._transaction_active = False
+
     def add_step(self, cell, action, reason):
-        self._steps.append({
-            'cell': cell,
-            'action': action,
-            'reason': reason
-        })
+        if self._transaction_active:
+            self._transaction_steps.append({'cell': cell, 'action': action, 'reason': reason})
+        else:
+            self._steps.append({'cell': cell, 'action': action, 'reason': reason})
 
     @property
     def where(self):

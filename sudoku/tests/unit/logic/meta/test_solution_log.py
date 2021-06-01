@@ -191,3 +191,36 @@ class TestSolutionLog(unittest.TestCase):
             .query('"3" in action')
 
         self.assertListEqual(expected, solution.get_steps())
+
+    def test_transactionOnCommit_Always_AddToSteps(self):
+        solution = SolutionLog()
+
+        solution.begin_transaction()
+        solution.add_step((0, 0), "Cross out 3", "Present in box")
+        solution.add_step((0, 2), "Cross out 3", "Present in box")
+        solution.add_step((0, 2), "Cross out 4", "Present in box")
+        solution.add_step((1, 0), "Cross out 4", "Present in box")
+        solution.commit()
+
+        expected = [
+            {'cell': (0, 0), 'action': "Cross out 3", 'reason': "Present in box"},
+            {'cell': (0, 2), 'action': "Cross out 3", 'reason': "Present in box"},
+            {'cell': (0, 2), 'action': "Cross out 4", 'reason': "Present in box"},
+            {'cell': (1, 0), 'action': "Cross out 4", 'reason': "Present in box"}
+        ]
+
+        self.assertListEqual(expected, solution.get_steps())
+
+    def test_transactionOnRollback_Always_KeepStepsUnchanged(self):
+        solution = SolutionLog()
+
+        solution.begin_transaction()
+        solution.add_step((0, 0), "Cross out 3", "Present in box")
+        solution.add_step((0, 2), "Cross out 3", "Present in box")
+        solution.add_step((0, 2), "Cross out 4", "Present in box")
+        solution.add_step((1, 0), "Cross out 4", "Present in box")
+        solution.rollback()
+
+        expected = []
+
+        self.assertListEqual(expected, solution.get_steps())
