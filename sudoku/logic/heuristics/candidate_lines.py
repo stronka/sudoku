@@ -1,20 +1,36 @@
 import copy
+import itertools
 
 import numpy
 
+from sudoku.logic.utils.utils import find_box_coords
+
+_ACTION = "Remove {}"
+_REASON_COL = "Candidate line: candidates in cells ({1}, {0}) and ({2}, {0}) form a line."
+
+
 
 def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
+    solution_log = kwargs.setdefault("solution_log", None)
+
     for candidate in range(9):
+        initial_candidate_layer = copy.copy(stack[candidate, :, :])
+
         for row in range(9):
 
             done = False
             rollback = False
-            initial_stack_row = copy.copy(stack[candidate, row, :])
+            initial_stack_row = initial_candidate_layer[row, :]
 
             for b in range(3):
                 box_row = initial_stack_row[3*b:3*b+3]
 
-                if box_row.sum() / box_row.max() == 2:
+                i1, i2 = find_box_coords(row)
+
+                box_row_sum = box_row.sum()
+                box_sum = initial_candidate_layer[i1:i2, 3*b:3*b+3].flatten().sum()
+
+                if box_sum == box_row_sum and box_row_sum / box_row.max() == 2:
                     if done:
                         rollback = True
                         break
@@ -27,21 +43,37 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
                 stack[candidate, row, :] = initial_stack_row
 
         for col in range(9):
+            initial_stack_col = initial_candidate_layer[:, col]
 
             done = False
             rollback = False
-            initial_stack_col = copy.copy(stack[candidate, :, col])
 
             for b in range(3):
                 box_col = initial_stack_col[3*b:3*b+3]
 
-                if box_col.sum() / box_col.max() == 2:
+                j1, j2 = find_box_coords(col)
+
+                box_col_sum = box_col.sum()
+                box_sum = initial_candidate_layer[3*b:3*b+3, j1:j2].flatten().sum()
+
+                if box_col_sum == box_sum and box_col_sum / box_col.max() == 2:
                     if done:
                         rollback = True
                         break
 
                     stack[candidate, 0:3*b, col] = 0
                     stack[candidate, 3*b+3:9, col] = 0
+
+                    if solution_log:
+                        for i in numpy.argwhere(initial_candidate_layer[:, col] > stack[candidate, :, col]).flatten():
+                            solution_log.add_step(
+                                (i, col),
+                                _ACTION.format(int(candidate + 1)),
+                                _REASON_COL.format(
+                                    col, *numpy.argwhere(stack[candidate, :, col] > 0).flatten()
+                                )
+                            )
+
                     done = True
 
             if rollback:
