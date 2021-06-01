@@ -27,6 +27,9 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
             for b in range(3):
                 box_row = initial_stack_row[3*b:3*b+3]
 
+                if initial_stack_row.max() and initial_stack_row.sum() / initial_stack_row.max() <= 2:
+                    continue
+
                 i1, i2 = find_box_coords(row)
 
                 box_row_sum = box_row.sum()
@@ -59,6 +62,9 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
 
         for col in range(9):
             initial_stack_col = initial_candidate_layer[:, col]
+
+            if initial_stack_col.max() and initial_stack_col.sum() / initial_stack_col.max() <= 2:
+                continue
 
             done = False
             rollback = False

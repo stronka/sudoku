@@ -27,6 +27,9 @@ def solve_sudoku(sudoku, solution_log=None):
 
         result = numpy.add(result, fill)
 
+    if not check_sudoku_correct(result):
+        raise Exception("Something went wrong. Sudoku solution complete, yet sudoku is not correct! :(")
+
     return result
 
 

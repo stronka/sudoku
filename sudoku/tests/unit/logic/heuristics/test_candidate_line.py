@@ -84,6 +84,16 @@ class TestLastElementsHeuristic(unittest.TestCase):
         process_candidate_lines(candidate_stack)
         numpy.testing.assert_equal(expected, candidate_stack[3, 1, :])
 
+    def test_ProcessCandidateLines_LastTwoElements_DoNothing(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[3, :, :] = 0
+        candidate_stack[3, 1, :] = [0, 0, 0,  4, 0, 4,  0, 0, 0]
+
+        expected = [0, 0, 0,  4, 0, 4,  0, 0, 0]
+
+        process_candidate_lines(candidate_stack)
+        numpy.testing.assert_equal(expected, candidate_stack[3, 1, :])
+
     def test_ProcessCandidateLines_CandidatesFormingLineLastBox_WipeOthersInRow(self):
         candidate_stack = create_candidates_stack()
         candidate_stack[3, :, :] = 0
