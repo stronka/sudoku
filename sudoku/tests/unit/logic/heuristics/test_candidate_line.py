@@ -150,7 +150,7 @@ class TestLastElementsHeuristic(unittest.TestCase):
         solution_log = SolutionLog()
 
         expected = [
-            {'cell': (4, 5), 'action': "Remove 5", 'reason': "Candidate line: candidates in cells (6, 5) and (8, 5) form a line."},
+            {'cell': (4, 5), 'action': "Remove 5", 'reason': "Candidate line: candidates in cells (6, 5) and (8, 5) form a line along column."},
         ]
 
         process_candidate_lines(candidate_stack, solution_log=solution_log)
@@ -163,7 +163,7 @@ class TestLastElementsHeuristic(unittest.TestCase):
         solution_log = SolutionLog()
 
         expected = [
-            {'cell': (4, 5), 'action': "Remove 5", 'reason': "Candidate line: candidates in cells (0, 5) and (1, 5) form a line."},
+            {'cell': (4, 5), 'action': "Remove 5", 'reason': "Candidate line: candidates in cells (0, 5) and (1, 5) form a line along column."},
         ]
 
         process_candidate_lines(candidate_stack, solution_log=solution_log)
@@ -187,8 +187,8 @@ class TestLastElementsHeuristic(unittest.TestCase):
         solution_log = SolutionLog()
 
         expected = [
-            {'cell': (0, 4), 'action': "Remove 4", 'reason': "Candidate line: candidates in cells (0, 0) and (0, 1) form a line."},
-            {'cell': (0, 8), 'action': "Remove 4", 'reason': "Candidate line: candidates in cells (0, 0) and (0, 1) form a line."},
+            {'cell': (0, 4), 'action': "Remove 4", 'reason': "Candidate line: candidates in cells (0, 0) and (0, 1) form a line along row."},
+            {'cell': (0, 8), 'action': "Remove 4", 'reason': "Candidate line: candidates in cells (0, 0) and (0, 1) form a line along row."},
         ]
 
         process_candidate_lines(candidate_stack, solution_log=solution_log)
