@@ -48,7 +48,7 @@ def create_sudoku_fill(stack: numpy.array, sudoku: numpy.array, **kwargs) -> num
 
     for i, j in product(range(0, 9), range(0, 9)):
         candidates = stack[:, i, j]
-        if sudoku[i, j] == 0 and candidates.sum()/candidates.max() == 1:
+        if sudoku[i, j] == 0 and candidates.max() and candidates.sum()/candidates.max() == 1:
             number = int(candidates.max())
             fill[i, j] = number
             if solution:
