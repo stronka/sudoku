@@ -6,8 +6,8 @@ import numpy
 from sudoku.logic.utils.utils import find_box_coords
 
 _ACTION = "Remove {}"
-_REASON_ROW = "Candidate line: candidates in cells ({0}, {1}) and ({0}, {2}) form a line."
-_REASON_COL = "Candidate line: candidates in cells ({1}, {0}) and ({2}, {0}) form a line."
+_REASON_ROW = "Candidate line: candidates in cells ({0}, {1}) and ({0}, {2}) form a line along row."
+_REASON_COL = "Candidate line: candidates in cells ({1}, {0}) and ({2}, {0}) form a line along column."
 
 
 def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
