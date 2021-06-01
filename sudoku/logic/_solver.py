@@ -3,6 +3,7 @@ from itertools import product
 
 from sudoku.logic import check_sudoku_correct
 from sudoku.logic.heuristics.annotated_pairs import process_annotated_pairs
+from sudoku.logic.heuristics.candidate_lines import process_candidate_lines
 from sudoku.logic.heuristics.elimination import apply_candidate_elimination
 from sudoku.logic.heuristics.last_elements import process_last_elements
 from sudoku.logic.utils.utils import find_box_coords
@@ -32,6 +33,7 @@ def solve_sudoku(sudoku, solution_log=None):
 def apply_heuristics(candidates_stack, result, solution_log=None):
     apply_candidate_elimination(candidates_stack, result, solution_log=solution_log)
     process_last_elements(candidates_stack, result, solution_log=solution_log)
+    process_candidate_lines(candidates_stack, solution_log=solution_log)
     process_annotated_pairs(candidates_stack, result, solution_log=solution_log)
 
 

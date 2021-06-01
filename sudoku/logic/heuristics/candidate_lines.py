@@ -32,7 +32,7 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
                 box_row_sum = box_row.sum()
                 box_sum = initial_candidate_layer[i1:i2, 3*b:3*b+3].flatten().sum()
 
-                if box_sum == box_row_sum and box_row_sum / box_row.max() == 2:
+                if box_row.max() and box_sum == box_row_sum and box_row_sum / box_row.max() == 2:
                     if done:
                         rollback = True
                         break
@@ -73,7 +73,7 @@ def process_candidate_lines(stack: numpy.array, *args, **kwargs) -> None:
                 box_col_sum = box_col.sum()
                 box_sum = initial_candidate_layer[3*b:3*b+3, j1:j2].flatten().sum()
 
-                if box_col_sum == box_sum and box_col_sum / box_col.max() == 2:
+                if box_col.max() and box_col_sum == box_sum and box_col_sum / box_col.max() == 2:
                     if done:
                         rollback = True
                         break
