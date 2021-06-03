@@ -7,6 +7,7 @@ from sudoku.logic.utils.utils import assert_line_count
 _ACTION = "Remove {}"
 
 _REASON_ROW = "Double pair: candidates in cells ({0}, {2}), ({0}, {3}), ({1}, {2}), ({1}, {3}) form a line along row {4}."
+_REASON_COL = "Double pair: candidates in cells ({2}, {0}), ({3}, {0}), ({2}, {1}), ({3}, {1}) form a line along column {4}."
 
 
 def process_double_pairs(stack: numpy.array, *args, **kwargs) -> None:
@@ -88,5 +89,33 @@ def _scan_across_columns(candidate, col_band, first_band, second_band, third_ban
     second_line = numpy.hstack((first_box[:, second_line_id], second_box[:, second_line_id]))
 
     if assert_line_count(first_line, 2) and assert_line_count(second_line, 2):
-        third_box[:, first_line_id] = 0
-        third_box[:, second_line_id] = 0
+        nonzeros_first_line = numpy.argwhere(third_box[:, first_line_id] != 0)
+        third_box[nonzeros_first_line, first_line_id] = 0
+
+        nonzeros_second_line = numpy.argwhere(third_box[:, second_line_id] != 0)
+        third_box[nonzeros_second_line, second_line_id] = 0
+
+        if solution_log:
+            global_first_line_id = col_band[0] + first_line_id
+            global_second_line_id = col_band[0] + second_line_id
+            global_first_pair_row_id = first_band[0] + first_box[:, first_line_id].nonzero()[0][0]
+            global_second_pair_row_id = second_band[0] + second_box[:, first_line_id].nonzero()[0][0]
+
+            _log_col_remove(solution_log, candidate, global_first_line_id, nonzeros_first_line, global_first_line_id,
+                            global_first_pair_row_id, global_second_line_id, global_second_pair_row_id, third_band)
+
+            _log_col_remove(solution_log, candidate, global_second_line_id, nonzeros_second_line, global_first_line_id,
+                            global_first_pair_row_id, global_second_line_id, global_second_pair_row_id, third_band)
+
+
+def _log_col_remove(solution_log, candidate, removed_line_id, nonzeros_first_line, global_first_line_id,
+                    global_first_pair_row_id, global_second_line_id, global_second_pair_row_id, third_band):
+    for _id in nonzeros_first_line:
+        global_removed_id = third_band[0] + _id[0]
+
+        fmt_reason = _REASON_COL.format(global_first_line_id, global_second_line_id, global_first_pair_row_id,
+                                        global_second_pair_row_id, removed_line_id)
+
+        solution_log.add_step(
+            (global_removed_id, removed_line_id), _ACTION.format(int(candidate + 1)), fmt_reason
+        )

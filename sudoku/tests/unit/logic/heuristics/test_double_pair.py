@@ -408,3 +408,36 @@ class TestDoublePairHeuristic(unittest.TestCase):
 
         process_double_pairs(candidate_stack, solution_log=solution_log)
         self.assertListEqual(expected, solution_log.get_steps())
+
+    def test_DoublePairs_RemoveAlongColumnInBandTwoBoxThree_LogSolution(self):
+        candidate_stack = create_candidates_stack()
+        solution_log = SolutionLog()
+        candidate_stack[1, :, :] = numpy.array([
+            [0, 0, 0,    2, 0, 2,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    2, 0, 2,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 2, 0,   0, 0, 0],
+            [0, 0, 0,    2, 2, 2,   0, 0, 0],
+        ])
+
+        expected = [
+            {
+                'cell': (8, 3),
+                'action': "Remove 2",
+                'reason': "Double pair: candidates in cells (0, 3), (4, 3), (0, 5), (4, 5) form a line along column 3."
+            },
+            {
+                'cell': (8, 5),
+                'action': "Remove 2",
+                'reason': "Double pair: candidates in cells (0, 3), (4, 3), (0, 5), (4, 5) form a line along column 5."
+            },
+        ]
+
+        process_double_pairs(candidate_stack, solution_log=solution_log)
+        self.assertListEqual(expected, solution_log.get_steps())
