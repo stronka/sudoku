@@ -1,1 +1,0 @@
-curl --header "Content-Type: application/json" --request POST --data @sudoku/resources/sudoku.json http://localhost:5000/sudoku/solve
