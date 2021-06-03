@@ -16,7 +16,7 @@ def process_double_pairs(stack: numpy.array) -> None:
                 scan_boxes_columnwise(ids1, ids2, ids3, band, candidate_layer)
 
 
-def scan_rows(first_line_id, second_line_id, top_box, mid_box, bottom_box):
+def scan_rows(first_band, second_band, third_band, first_line_id, second_line_id, top_box, mid_box, bottom_box):
     first_line = numpy.hstack((top_box[first_line_id, :], mid_box[first_line_id, :]))
     second_line = numpy.hstack((top_box[second_line_id, :], mid_box[second_line_id, :]))
 
@@ -25,7 +25,7 @@ def scan_rows(first_line_id, second_line_id, top_box, mid_box, bottom_box):
         bottom_box[second_line_id, :] = 0
 
 
-def scan_columns(first_line_id, second_line_id, top_box, mid_box, bottom_box):
+def scan_columns(first_band, second_band, third_band, first_line_id, second_line_id, top_box, mid_box, bottom_box):
     first_line = numpy.hstack((top_box[:, first_line_id], mid_box[:, first_line_id]))
     second_line = numpy.hstack((top_box[:, second_line_id], mid_box[:, second_line_id]))
 
