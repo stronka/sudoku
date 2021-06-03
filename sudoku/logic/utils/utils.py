@@ -9,3 +9,7 @@ def find_box_coords(i):
         i_lo = b
 
     return i_lo, i_hi
+
+
+def assert_line_count(line, n):
+    return line.max() and line.sum() / line.max() == n
