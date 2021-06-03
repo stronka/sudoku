@@ -48,6 +48,9 @@ def _extract_box_along_columns(ids1, ids2, ids3, band, candidate_layer):
 
 
 def _scan_line_across_rows(candidate, row_band, first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box, solution_log):
+    if not row_pair_spans_along_two_boxes(first_box, first_line_id, second_box, second_line_id):
+        return
+
     first_line = numpy.hstack((first_box[first_line_id, :], second_box[first_line_id, :]))
     second_line = numpy.hstack((first_box[second_line_id, :], second_box[second_line_id, :]))
 
@@ -71,6 +74,15 @@ def _scan_line_across_rows(candidate, row_band, first_band, second_band, third_b
                             global_first_pair_col_id, global_second_line_id, global_second_pair_col_id, third_band)
 
 
+def row_pair_spans_along_two_boxes(first_box, first_line_id, second_box, second_line_id):
+    return (
+        assert_line_count(first_box[first_line_id, :], 1) and
+        assert_line_count(second_box[first_line_id, :], 1) and
+        assert_line_count(first_box[second_line_id, :], 1) and
+        assert_line_count(second_box[second_line_id, :], 1)
+    )
+
+
 def _log_row_remove(solution_log, candidate, removed_line_id, nonzeros_first_line, global_first_line_id,
                     global_first_pair_col_id, global_second_line_id, global_second_pair_col_id, third_band):
     for _id in nonzeros_first_line:
@@ -85,6 +97,9 @@ def _log_row_remove(solution_log, candidate, removed_line_id, nonzeros_first_lin
 
 
 def _scan_across_columns(candidate, col_band, first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box, solution_log):
+    if not col_pair_spans_along_two_boxes(first_box, first_line_id, second_box, second_line_id):
+        return
+
     first_line = numpy.hstack((first_box[:, first_line_id], second_box[:, first_line_id]))
     second_line = numpy.hstack((first_box[:, second_line_id], second_box[:, second_line_id]))
 
@@ -106,6 +121,15 @@ def _scan_across_columns(candidate, col_band, first_band, second_band, third_ban
 
             _log_col_remove(solution_log, candidate, global_second_line_id, nonzeros_second_line, global_first_line_id,
                             global_first_pair_row_id, global_second_line_id, global_second_pair_row_id, third_band)
+
+
+def col_pair_spans_along_two_boxes(first_box, first_line_id, second_box, second_line_id):
+    return (
+        assert_line_count(first_box[:, first_line_id], 1) and
+        assert_line_count(second_box[:, first_line_id], 1) and
+        assert_line_count(first_box[:, second_line_id], 1) and
+        assert_line_count(second_box[:, second_line_id], 1)
+    )
 
 
 def _log_col_remove(solution_log, candidate, removed_line_id, nonzeros_first_line, global_first_line_id,

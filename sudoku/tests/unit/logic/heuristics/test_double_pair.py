@@ -509,3 +509,38 @@ class TestDoublePairHeuristic(unittest.TestCase):
 
         process_double_pairs(candidate_stack, solution_log=solution_log)
         self.assertListEqual(expected, solution_log.get_steps())
+
+    def test_processDoublePairs_NoDoublePairsPresend_DoNothing(self):
+        candidate_stack = create_candidates_stack()
+        solution_log = SolutionLog()
+        candidate_stack[3, :, :] = numpy.array([
+            [0, 0, 0,  0, 4, 4,  4, 4, 0],
+            [0, 0, 0,  0, 4, 4,  0, 4, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 4, 4,  0, 0, 0,  0, 0, 0],
+            [0, 0, 0,  0, 0, 0,  4, 4, 0],
+
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 4, 0,  0, 4, 4,  0, 0, 0],
+            [0, 4, 4,  0, 4, 4,  0, 0, 0]
+        ])
+
+        expected = numpy.array([
+            [0, 0, 0,  0, 4, 4,  4, 4, 0],
+            [0, 0, 0,  0, 4, 4,  0, 4, 0],
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 4, 4,  0, 0, 0,  0, 0, 0],
+            [0, 0, 0,  0, 0, 0,  4, 4, 0],
+
+            [0, 0, 0,  0, 0, 0,  0, 0, 0],
+            [0, 4, 0,  0, 4, 4,  0, 0, 0],
+            [0, 4, 4,  0, 4, 4,  0, 0, 0]
+        ])
+
+        process_double_pairs(candidate_stack, solution_log=solution_log)
+        numpy.testing.assert_equal(expected, candidate_stack[3, :, :])
+
