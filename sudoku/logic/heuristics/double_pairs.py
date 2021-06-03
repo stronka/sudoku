@@ -12,11 +12,11 @@ def process_double_pairs(stack: numpy.array) -> None:
 
         for band in bands:
             for ids1, ids2, ids3 in itertools.permutations(bands):
-                scan_box_lines(ids1, ids2, ids3, band, candidate_layer, extract_box_along_rows, scan_rows)
-                scan_box_lines(ids1, ids2, ids3, band, candidate_layer, extract_box_along_columns, scan_columns)
+                _scan_box_lines(ids1, ids2, ids3, band, candidate_layer, _extract_box_along_rows, _scan_line_across_rows)
+                _scan_box_lines(ids1, ids2, ids3, band, candidate_layer, _extract_box_along_columns, _scan_across_columns)
 
 
-def scan_box_lines(ids1, ids2, ids3, band, candidate_layer, extract_method, scan_method):
+def _scan_box_lines(ids1, ids2, ids3, band, candidate_layer, extract_method, scan_method):
     first_box, second_box, third_box = extract_method(ids1, ids2, ids3, band, candidate_layer)
 
     if assert_line_count(first_box.flatten(), 2) and assert_line_count(second_box.flatten(), 2):
@@ -24,7 +24,7 @@ def scan_box_lines(ids1, ids2, ids3, band, candidate_layer, extract_method, scan
             scan_method(ids1, ids2, ids3, first_line, second_line, first_box, second_box, third_box)
 
 
-def extract_box_along_rows(ids1, ids2, ids3, band, candidate_layer):
+def _extract_box_along_rows(ids1, ids2, ids3, band, candidate_layer):
     band_slice = slice(*band)
     first_box = candidate_layer[band_slice, slice(*ids1)]
     second_box = candidate_layer[band_slice, slice(*ids2)]
@@ -32,7 +32,7 @@ def extract_box_along_rows(ids1, ids2, ids3, band, candidate_layer):
     return first_box, second_box, third_box
 
 
-def extract_box_along_columns(ids1, ids2, ids3, band, candidate_layer):
+def _extract_box_along_columns(ids1, ids2, ids3, band, candidate_layer):
     band_slice = slice(*band)
     first_box = candidate_layer[slice(*ids1), band_slice]
     second_box = candidate_layer[slice(*ids2), band_slice]
@@ -40,7 +40,7 @@ def extract_box_along_columns(ids1, ids2, ids3, band, candidate_layer):
     return first_box, second_box, third_box
 
 
-def scan_rows(first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box):
+def _scan_line_across_rows(first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box):
     first_line = numpy.hstack((first_box[first_line_id, :], second_box[first_line_id, :]))
     second_line = numpy.hstack((first_box[second_line_id, :], second_box[second_line_id, :]))
 
@@ -49,7 +49,7 @@ def scan_rows(first_band, second_band, third_band, first_line_id, second_line_id
         third_box[second_line_id, :] = 0
 
 
-def scan_columns(first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box):
+def _scan_across_columns(first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box):
     first_line = numpy.hstack((first_box[:, first_line_id], second_box[:, first_line_id]))
     second_line = numpy.hstack((first_box[:, second_line_id], second_box[:, second_line_id]))
 
