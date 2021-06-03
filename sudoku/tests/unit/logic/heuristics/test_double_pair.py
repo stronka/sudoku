@@ -441,3 +441,71 @@ class TestDoublePairHeuristic(unittest.TestCase):
 
         process_double_pairs(candidate_stack, solution_log=solution_log)
         self.assertListEqual(expected, solution_log.get_steps())
+
+    def test_DoublePairs_RemoveAlongColumnInBandThreeBoxThree_LogSolution(self):
+        candidate_stack = create_candidates_stack()
+        solution_log = SolutionLog()
+        candidate_stack[1, :, :] = numpy.array([
+            [0, 0, 0,    0, 0, 0,    2, 0, 2],
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+            [0, 0, 0,    0, 0, 0,    2, 0, 2],
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+            [0, 0, 0,    0, 0, 0,    0, 2, 0],
+            [0, 0, 0,    0, 0, 0,    2, 2, 2],
+        ])
+
+        expected = [
+            {
+                'cell': (8, 6),
+                'action': "Remove 2",
+                'reason': "Double pair: candidates in cells (0, 6), (4, 6), (0, 8), (4, 8) form a line along column 6."
+            },
+            {
+                'cell': (8, 8),
+                'action': "Remove 2",
+                'reason': "Double pair: candidates in cells (0, 6), (4, 6), (0, 8), (4, 8) form a line along column 8."
+            },
+        ]
+
+        process_double_pairs(candidate_stack, solution_log=solution_log)
+        self.assertListEqual(expected, solution_log.get_steps())
+
+
+    def test_DoublePairs_RemoveAlongColumnInBandThreeBoxTwo_LogSolution(self):
+        candidate_stack = create_candidates_stack()
+        solution_log = SolutionLog()
+        candidate_stack[1, :, :] = numpy.array([
+            [0, 0, 0,    0, 0, 0,    2, 0, 2],
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+            [0, 0, 0,    0, 0, 0,    0, 2, 0],
+            [0, 0, 0,    0, 0, 0,    2, 2, 2],
+
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+            [0, 0, 0,    0, 0, 0,    2, 0, 2],
+            [0, 0, 0,    0, 0, 0,    0, 0, 0],
+
+        ])
+
+        expected = [
+            {
+                'cell': (5, 6),
+                'action': "Remove 2",
+                'reason': "Double pair: candidates in cells (0, 6), (7, 6), (0, 8), (7, 8) form a line along column 6."
+            },
+            {
+                'cell': (5, 8),
+                'action': "Remove 2",
+                'reason': "Double pair: candidates in cells (0, 6), (7, 6), (0, 8), (7, 8) form a line along column 8."
+            },
+        ]
+
+        process_double_pairs(candidate_stack, solution_log=solution_log)
+        self.assertListEqual(expected, solution_log.get_steps())
