@@ -16,19 +16,19 @@ def process_double_pairs(stack: numpy.array) -> None:
                 scan_boxes_columnwise(ids1, ids2, ids3, band, candidate_layer)
 
 
-def scan_rows(first_band, second_band, third_band, first_line_id, second_line_id, top_box, mid_box, bottom_box):
-    first_line = numpy.hstack((top_box[first_line_id, :], mid_box[first_line_id, :]))
-    second_line = numpy.hstack((top_box[second_line_id, :], mid_box[second_line_id, :]))
+def scan_rows(first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box):
+    first_line = numpy.hstack((first_box[first_line_id, :], second_box[first_line_id, :]))
+    second_line = numpy.hstack((first_box[second_line_id, :], second_box[second_line_id, :]))
 
     if assert_line_count(first_line, 2) and assert_line_count(second_line, 2):
-        bottom_box[first_line_id, :] = 0
-        bottom_box[second_line_id, :] = 0
+        third_box[first_line_id, :] = 0
+        third_box[second_line_id, :] = 0
 
 
-def scan_columns(first_band, second_band, third_band, first_line_id, second_line_id, top_box, mid_box, bottom_box):
-    first_line = numpy.hstack((top_box[:, first_line_id], mid_box[:, first_line_id]))
-    second_line = numpy.hstack((top_box[:, second_line_id], mid_box[:, second_line_id]))
+def scan_columns(first_band, second_band, third_band, first_line_id, second_line_id, first_box, second_box, third_box):
+    first_line = numpy.hstack((first_box[:, first_line_id], second_box[:, first_line_id]))
+    second_line = numpy.hstack((first_box[:, second_line_id], second_box[:, second_line_id]))
 
     if assert_line_count(first_line, 2) and assert_line_count(second_line, 2):
-        bottom_box[:, first_line_id] = 0
-        bottom_box[:, second_line_id] = 0
+        third_box[:, first_line_id] = 0
+        third_box[:, second_line_id] = 0
