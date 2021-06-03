@@ -44,6 +44,7 @@ serve_help = '''
     Input json must be provided in request data.
 '''
 
+
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
