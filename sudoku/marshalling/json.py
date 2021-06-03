@@ -2,7 +2,7 @@ import json
 import numpy
 
 
-def unmarshall(data: str) -> numpy.array:
+def unmarshall(data) -> numpy.array:
     parsed = json.loads(data)
     return numpy.array(parsed['sudoku'])
 

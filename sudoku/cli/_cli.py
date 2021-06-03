@@ -39,6 +39,10 @@ Example queries:
     __main__.py --query \"\\\"elimination\\\" in reason\" resources/sudoku.json 
 '''
 
+serve_help = '''
+    Run as server. REST endpoint /sudoku/solve is provided and can be queried with POST request.
+    Input json must be provided in request data.
+'''
 
 def create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
@@ -46,7 +50,8 @@ def create_parser():
     parser.add_argument('-i', action='store_true', help="Print input")
     parser.add_argument('-o', action='store_true', help="Print output")
     parser.add_argument('--query', help=query_help)
-    parser.add_argument('input', help=input_file_help)
+    parser.add_argument('--serve',  action='store_true', help="Run as server")
+    parser.add_argument('input', nargs='?', help=input_file_help)
     parser.add_argument(
         'output',
         nargs='?',

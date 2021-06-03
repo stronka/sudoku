@@ -1,19 +1,27 @@
 from pprint import pprint
 
 from sudoku.cli import create_parser
+from sudoku.api.rest.server import serve
 from sudoku.logic import solve_sudoku
 from sudoku.logic.meta.solution_log import SolutionLog
 from sudoku.marshalling import json
 from sudoku.parser.file import parse, dump
 
 
-def run_cli():
+def run():
     parser = create_parser()
     args = parser.parse_args()
-    run(args)
+
+    if args.serve:
+        serve()
+    else:
+        run_cli(args)
 
 
-def run(args):
+def run_cli(args):
+    if not args.input:
+        print("No input file provided!")
+
     sudoku = parse(args.input, json.unmarshall)
 
     solution_log = SolutionLog() if args.query else None
@@ -37,4 +45,4 @@ def run(args):
 
 
 if __name__ == "__main__":
-    run_cli()
+    run()
