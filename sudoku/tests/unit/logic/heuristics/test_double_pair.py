@@ -238,3 +238,36 @@ class TestDoublePairHeuristic(unittest.TestCase):
 
         process_double_pairs(candidate_stack)
         numpy.testing.assert_equal(expected, candidate_stack[2, :, :])
+
+    def test_DoublePairs_DoublePairsInRow_WipeAlongStack(self):
+        candidate_stack = create_candidates_stack()
+        candidate_stack[2, :, :] = numpy.array([
+            [3, 3, 0,    0, 3, 0,   0, 3, 0],
+            [0, 3, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 3, 0,   0, 3, 0],
+
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+        ])
+
+        expected = numpy.array([
+            [0, 0, 0,    0, 3, 0,   0, 3, 0],
+            [0, 3, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 3, 0,   0, 3, 0],
+
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+            [0, 0, 0,    0, 0, 0,   0, 0, 0],
+        ])
+
+        process_double_pairs(candidate_stack)
+        numpy.testing.assert_equal(expected, candidate_stack[2, :, :])
