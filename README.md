@@ -38,6 +38,18 @@ Input file should look like this:
 }
 ```
 
+Solver can be served to provide REST endpoint /sudoku/solve:
+```commandline
+python -m sudoku --serve
+```
+
+Example call using cURL:
+```commandline
+curl -X POST -H "Content-Type: application/json" -d @input.json http://localhost:5000/sudoku/solve
+```
+
+Please note that server mode is still work in progress.
+
 For more help on CLI:
 ```commandline
 python -m sudoku -h
