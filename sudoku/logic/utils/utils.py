@@ -13,3 +13,4 @@ def find_box_coords(i):
 
 def assert_line_count(line, n):
     return line.max() and line.sum() / line.max() == n
+
