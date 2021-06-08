@@ -35,7 +35,8 @@ def _scan_column_bands_for_multiple_lines(candidate, candidate_layer, solution_l
                     candidate_layer[row_box3[:, numpy.newaxis], (i, j)] = 0
 
                     if solution_log:
-                        _log_solution_steps(_REASON_ROWS, candidate, candidate_layer, i, j, layer_before, solution_log)
+                        removed = numpy.nonzero(layer_before - candidate_layer)
+                        _log_solution_steps(_REASON_ROWS, candidate, removed, i, j, solution_log)
 
 
 def _scan_row_bands_for_multiple_lines(candidate, candidate_layer, solution_log):
@@ -58,11 +59,10 @@ def _scan_row_bands_for_multiple_lines(candidate, candidate_layer, solution_log)
                     candidate_layer[(i, j), col_box3[:, numpy.newaxis]] = 0
 
                     if solution_log:
-                        _log_solution_steps(_REASON_COLS, candidate, candidate_layer, i, j, layer_before, solution_log)
+                        removed = numpy.nonzero(layer_before - candidate_layer)
+                        _log_solution_steps(_REASON_COLS, candidate, removed, i, j, solution_log)
 
 
-def _log_solution_steps(reason, candidate, candidate_layer, i, j, layer_before, solution_log):
-    removed = numpy.nonzero(layer_before - candidate_layer)
-
+def _log_solution_steps(reason, candidate, removed, i, j, solution_log):
     for cell in zip(removed[0], removed[1]):
         solution_log.add_step(cell, _ACTION.format(candidate + 1), reason.format(i, j))
