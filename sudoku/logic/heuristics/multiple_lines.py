@@ -2,6 +2,12 @@ import copy
 import itertools
 import numpy
 
+_REASON_COLS = "Multiple lines: candidates form lines along rows {} and {}"
+
+_ACTION = "Remove {}"
+
+_REASON_ROWS = "Multiple lines: candidates form lines along columns {} and {}"
+
 _bands = (numpy.arange(0, 3), numpy.arange(3, 6), numpy.arange(6, 9))
 
 
@@ -26,14 +32,7 @@ def _scan_column_bands_for_multiple_lines(candidate, candidate_layer, solution_l
                     candidate_layer[row_box3[:, numpy.newaxis], (i, j)] = 0
 
                     if solution_log:
-                        removed = numpy.nonzero(layer_before-candidate_layer)
-
-                        for (n, m) in zip(removed[0], removed[1]):
-                            solution_log.add_step(
-                                (n, m),
-                                "Remove {}".format(candidate+1),
-                                "Multiple lines: candidates form lines along columns {} and {}".format(i, j)
-                            )
+                        _log_solution_steps(_REASON_ROWS, candidate, candidate_layer, i, j, layer_before, solution_log)
 
 
 def _scan_row_bands_for_multiple_lines(candidate, candidate_layer, solution_log):
@@ -51,11 +50,14 @@ def _scan_row_bands_for_multiple_lines(candidate, candidate_layer, solution_log)
                     candidate_layer[(i, j), col_box3[:, numpy.newaxis]] = 0
 
                     if solution_log:
-                        removed = numpy.nonzero(layer_before-candidate_layer)
+                        _log_solution_steps(_REASON_COLS, candidate, candidate_layer, i, j, layer_before, solution_log)
 
-                        for (n, m) in zip(removed[0], removed[1]):
-                            solution_log.add_step(
-                                (n, m),
-                                "Remove {}".format(candidate+1),
-                                "Multiple lines: candidates form lines along rows {} and {}".format(i, j)
-                            )
+
+def _log_solution_steps(reason, candidate, candidate_layer, i, j, layer_before, solution_log):
+    removed = numpy.nonzero(layer_before - candidate_layer)
+    for (n, m) in zip(removed[0], removed[1]):
+        solution_log.add_step(
+            (n, m),
+            _ACTION.format(candidate + 1),
+            reason.format(i, j)
+        )
