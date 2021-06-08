@@ -18,8 +18,13 @@ def process_multiple_lines(stack: numpy.array, **kwargs):
 def _scan_column_bands_for_multiple_lines(candidate, candidate_layer, solution_log):
     for cols in _bands:
         for row_box1, row_box2, row_box3 in itertools.permutations(_bands):
-            scanned_indices = numpy.hstack((row_box1, row_box2))
+            box1 = candidate_layer[row_box1[:, numpy.newaxis], cols]
+            box2 = candidate_layer[row_box2[:, numpy.newaxis], cols]
 
+            if not (box1.any() and box2.any()):
+                continue
+
+            scanned_indices = numpy.hstack((row_box1, row_box2))
             full_band = candidate_layer[scanned_indices[:, numpy.newaxis], cols]
 
             for i, j in itertools.combinations(cols, 2):
@@ -36,8 +41,13 @@ def _scan_column_bands_for_multiple_lines(candidate, candidate_layer, solution_l
 def _scan_row_bands_for_multiple_lines(candidate, candidate_layer, solution_log):
     for rows in _bands:
         for col_box1, col_box2, col_box3 in itertools.permutations(_bands):
-            scanned_indices = numpy.hstack((col_box1, col_box2))
+            box1 = candidate_layer[rows, col_box1[:, numpy.newaxis]]
+            box2 = candidate_layer[rows, col_box2[:, numpy.newaxis]]
 
+            if not (box1.any() and box2.any()):
+                continue
+
+            scanned_indices = numpy.hstack((col_box1, col_box2))
             full_band = candidate_layer[rows, scanned_indices[:, numpy.newaxis]]
 
             for i, j in itertools.combinations(rows, 2):

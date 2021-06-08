@@ -9,6 +9,7 @@ from sudoku.logic.heuristics.candidate_lines import process_candidate_lines
 from sudoku.logic.heuristics.double_pairs import process_double_pairs
 from sudoku.logic.heuristics.elimination import apply_candidate_elimination
 from sudoku.logic.heuristics.last_elements import process_last_elements
+from sudoku.logic.heuristics.multiple_lines import process_multiple_lines
 from sudoku.logic.utils.utils import find_box_coords
 
 
@@ -40,6 +41,7 @@ def apply_heuristics(candidates_stack, result, solution_log=None):
     process_last_elements(candidates_stack, result, solution_log=solution_log)
     process_candidate_lines(candidates_stack, solution_log=solution_log)
     process_double_pairs(candidates_stack, solution_log=solution_log)
+    process_multiple_lines(candidates_stack, solution_log=solution_log)
     process_annotated_pairs(candidates_stack, result, solution_log=solution_log)
 
 
