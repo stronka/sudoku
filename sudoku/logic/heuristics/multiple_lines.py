@@ -2,11 +2,9 @@ import copy
 import itertools
 import numpy
 
-_REASON_COLS = "Multiple lines: candidates form lines along rows {} and {}"
-
 _ACTION = "Remove {}"
-
 _REASON_ROWS = "Multiple lines: candidates form lines along columns {} and {}"
+_REASON_COLS = "Multiple lines: candidates form lines along rows {} and {}"
 
 _bands = (numpy.arange(0, 3), numpy.arange(3, 6), numpy.arange(6, 9))
 
@@ -55,9 +53,6 @@ def _scan_row_bands_for_multiple_lines(candidate, candidate_layer, solution_log)
 
 def _log_solution_steps(reason, candidate, candidate_layer, i, j, layer_before, solution_log):
     removed = numpy.nonzero(layer_before - candidate_layer)
-    for (n, m) in zip(removed[0], removed[1]):
-        solution_log.add_step(
-            (n, m),
-            _ACTION.format(candidate + 1),
-            reason.format(i, j)
-        )
+
+    for cell in zip(removed[0], removed[1]):
+        solution_log.add_step(cell, _ACTION.format(candidate + 1), reason.format(i, j))
